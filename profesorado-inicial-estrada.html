@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profesorado de Educación Inicial · ISFD José Manuel Estrada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:#1b2d4f; --azul-medio:#253d6b; --azul-claro:#2e4d87;
+    --dorado:#c9a84c; --dorado-claro:#e8c97d; --dorado-suave:#fef3d0;
+    --blanco:#ffffff; --crema:#f7f4ee; --crema-dark:#edeae1;
+    --texto:#1a1a2e; --gris:#6b7280;
+    --sombra:0 4px 28px rgba(27,45,79,0.13); --radio:14px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--crema); color:var(--texto); min-height:100vh; padding-bottom:40px; }
+
+  .franja-top { height:5px; background:linear-gradient(90deg,var(--azul),var(--dorado),var(--dorado-claro),var(--dorado),var(--azul)); }
+  header { background:var(--azul); padding:0 0 24px; text-align:center; }
+  .inst-label { display:block; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--dorado); padding:18px 20px 6px; font-weight:500; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(20px,5.5vw,28px); color:var(--blanco); line-height:1.15; padding:0 20px; }
+  .oficina-sub { font-family:'DM Sans',sans-serif; font-size:clamp(12px,3vw,15px); color:var(--dorado-claro); font-weight:400; letter-spacing:0.5px; margin-top:5px; display:block; }
+  .linea-dorada { width:60px; height:2px; background:var(--dorado); margin:10px auto 0; }
+
+  .coord-wrap { padding:20px 16px 20px; display:flex; justify-content:center; }
+  .coord-card { background:var(--azul-medio); border:1px solid rgba(201,168,76,0.35); border-radius:var(--radio); padding:16px 18px; display:flex; align-items:center; gap:16px; width:100%; max-width:540px; position:relative; overflow:hidden; }
+  .coord-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .foto-circle { width:65px; height:65px; border-radius:50%; border:2.5px solid var(--dorado); overflow:hidden; flex-shrink:0; }
+  .foto-circle img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .coord-etiqueta { font-size:9px; letter-spacing:1.8px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:3px; }
+  .coord-nombre { font-family:'Playfair Display',serif; font-size:15px; color:var(--blanco); line-height:1.2; margin-bottom:3px; }
+  .coord-horario { font-size:11.5px; color:var(--dorado-claro); }
+
+  main { max-width:640px; margin:0 auto; padding:0 16px 20px; }
+
+  .datos-grid { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .dato-chip { background:var(--blanco); border:1px solid rgba(27,45,79,0.1); border-radius:10px; padding:10px 14px; flex:1; min-width:110px; box-shadow:var(--sombra); }
+  .dato-label { font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--gris); font-weight:600; margin-bottom:3px; }
+  .dato-valor { font-size:13px; color:var(--azul); font-weight:600; line-height:1.3; }
+
+  .seccion { background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); margin-bottom:14px; overflow:hidden; border:1px solid rgba(27,45,79,0.08); }
+  .seccion-header { display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer; user-select:none; }
+  .seccion-icon { width:38px; height:38px; border-radius:9px; background:var(--azul); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  .seccion-titulo { flex:1; font-family:'Playfair Display',serif; font-size:15px; color:var(--azul); }
+  .seccion-arrow { color:var(--dorado); font-size:20px; transition:transform .25s; }
+  .seccion.open .seccion-arrow { transform:rotate(90deg); }
+  .seccion-body { display:none; padding:0 16px 16px; border-top:1px solid var(--crema-dark); }
+  .seccion.open .seccion-body { display:block; padding-top:14px; }
+
+  .nota-box { background:#f0f4fb; border-radius:10px; padding:14px; border-left:3px solid var(--azul-claro); margin-bottom:10px; }
+  .nota-box p { font-size:13.5px; line-height:1.7; color:#374151; }
+  .nota-box ul { margin-top:8px; padding-left:18px; }
+  .nota-box ul li { font-size:13.5px; line-height:1.8; color:#374151; }
+
+  .paso { display:flex; gap:14px; margin-bottom:20px; position:relative; }
+  .paso:not(:last-child)::after { content:''; position:absolute; left:18px; top:44px; bottom:-8px; width:2px; background:linear-gradient(180deg,var(--dorado),transparent); }
+  .paso-num { width:36px; height:36px; border-radius:50%; background:var(--azul); border:2px solid var(--dorado); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--dorado-claro); flex-shrink:0; }
+  .paso-contenido { flex:1; }
+  .paso-titulo { font-size:13.5px; font-weight:700; color:var(--azul); margin-bottom:5px; }
+  .paso-desc { font-size:13px; color:#374151; line-height:1.6; }
+  .paso-desc ul { margin-top:6px; padding-left:16px; }
+  .paso-desc ul li { font-size:13px; line-height:1.7; color:#374151; }
+
+  .alerta { background:#fffbeb; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400e; margin-top:10px; line-height:1.55; }
+  .alerta::before { content:'⚠️ '; }
+  .info-box { background:#f0faf5; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#065f46; margin-top:10px; line-height:1.55; border-left:3px solid #34d399; }
+  .info-box::before { content:'ℹ️ '; }
+
+  .competencia-item { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+  .comp-dot { width:8px; height:8px; border-radius:50%; background:var(--dorado); flex-shrink:0; margin-top:6px; }
+  .comp-texto { font-size:13.5px; color:#374151; line-height:1.6; }
+
+  .horario-fila { display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; }
+  .horario-fila:last-child { margin-bottom:0; }
+  .dia-badge { background:var(--azul); color:var(--dorado-claro); font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px; white-space:nowrap; flex-shrink:0; min-width:80px; text-align:center; }
+  .horario-horas { font-size:13px; color:var(--texto); line-height:1.5; }
+
+  footer { text-align:center; font-size:12px; color:var(--gris); padding:16px; border-top:1px solid var(--crema-dark); margin-top:8px; }
+  footer span { color:var(--azul-medio); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="franja-top"></div>
+<header>
+  <span class="inst-label">Instituto Superior de Formación Docente</span>
+  <h1>José Manuel Estrada</h1>
+  <span class="oficina-sub">Profesorado de Educación Inicial</span>
+  <div class="linea-dorada"></div>
+
+  <div class="coord-wrap">
+    <div class="coord-card">
+      <div class="foto-circle">
+        <img src="data:image/jpeg;base64,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" alt="Prof. Marturet Andrea">
+      </div>
+      <div>
+        <div class="coord-etiqueta">Coordinadora de Carrera</div>
+        <div class="coord-nombre">Marturet, Andrea</div>
+        <div class="coord-horario">🕐 Lunes: 14:00–16:00 hs · Jueves: 14:00–16:00 hs</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="datos-grid">
+    <div class="dato-chip">
+      <div class="dato-label">Título</div>
+      <div class="dato-valor">Profesor de Educación Inicial</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Duración</div>
+      <div class="dato-valor">4 años</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Habilitante</div>
+      <div class="dato-valor">Nivel Inicial</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Cursado</div>
+      <div class="dato-valor">13:10 – 17:10 hs</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Prácticas</div>
+      <div class="dato-valor">Turno mañana</div>
+    </div>
+  </div>
+
+  <!-- PREINSCRIPCIÓN -->
+  <div class="seccion" id="s1">
+    <div class="seccion-header" onclick="toggleSec('s1')">
+      <div class="seccion-icon">📝</div>
+      <div class="seccion-titulo">¿Cómo es la preinscripción?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá al sistema SIMA y buscá la carrera</div>
+          <div class="paso-desc">Entrá a <strong>sima.mec.gob.ar</strong> → <strong>Catálogo de Carreras</strong> → buscá por instituto o carrera → seleccioná <strong>Profesorado de Educación Inicial</strong> → tocá <strong>Inscribir</strong>.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá tu DNI y correo electrónico</div>
+          <div class="paso-desc">Completá el formulario con tu <strong>DNI sin puntos</strong> y tu <strong>correo electrónico</strong> — verificá que sea el correcto. Aceptá las condiciones y tocá <strong>Enviar</strong>.</div>
+          <div class="alerta">Este proceso todavía NO te pre-inscribe, solo envía el email de solicitud.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Confirmá desde tu correo</div>
+          <div class="paso-desc">Revisá tu bandeja de entrada (también spam). Abrí el mail de SIMA y hacé clic en <strong>Confirmar</strong>.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Completá la ficha y creá tu usuario SIMA</div>
+          <div class="paso-desc">Completá todos tus datos personales y creá una <strong>contraseña para tu usuario SIMA</strong> — guardala, la vas a necesitar para inscribirte a materias y rendir exámenes.</div>
+          <div class="info-box">Guardá tu usuario y contraseña de SIMA. Los necesitás para matricularte e inscribirte a mesas de examen.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">5</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Solicitá turno y presentá la documentación</div>
+          <div class="paso-desc">Solicitá turno desde SIMA para presentar en el instituto:
+            <ul>
+              <li>Fotocopia legalizada del <strong>DNI</strong></li>
+              <li>Fotocopia del <strong>Título Secundario</strong> o constancia de finalización o de materias adeudadas</li>
+            </ul>
+          </div>
+          <div class="alerta">Solicitar turno es OBLIGATORIO para presentar la documentación en el instituto.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAN DE ESTUDIO -->
+  <div class="seccion" id="s2">
+    <div class="seccion-header" onclick="toggleSec('s2')">
+      <div class="seccion-icon">📋</div>
+      <div class="seccion-titulo">Plan de Estudio</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <p>Consultá el plan de estudio completo del Profesorado de Educación Inicial en el sitio institucional.</p>
+      </div>
+      <a href="http://iestrada.edu.ar/portal/wp-content/uploads/2023/04/plan-de-estudio-inicial.pdf" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul);color:var(--dorado-claro);font-size:13px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;margin-top:12px;">📄 Ver Plan de Estudio completo</a>
+    </div>
+  </div>
+
+  <!-- FORMACIÓN -->
+  <div class="seccion" id="s3">
+    <div class="seccion-header" onclick="toggleSec('s3')">
+      <div class="seccion-icon">📚</div>
+      <div class="seccion-titulo">¿Qué incluye la formación?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <ul>
+          <li>Conocimiento del <strong>sistema educativo</strong> y el trabajo docente — Pedagogía, Didáctica, Filosofía y Educación, Instituciones Educativas, Nuevas Tecnologías, entre otras</li>
+          <li>Conocimiento de las <strong>características y necesidades</strong> de los alumnos del Nivel Inicial — Problemáticas de la Educación Inicial, Sujetos de la Educación Inicial, entre otras</li>
+          <li>Conocimiento de las <strong>áreas de enseñanza</strong> del Nivel Inicial: Matemática, Lengua, Ciencias Sociales, Ciencias Naturales, entre otras</li>
+          <li><strong>Práctica profesional progresiva</strong>: observación, planificación y evaluación en instituciones reales</li>
+          <li><strong>Residencia Pedagógica</strong>: período de dictado de clases en el Nivel Inicial</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFIL DEL EGRESADO -->
+  <div class="seccion" id="s4">
+    <div class="seccion-header" onclick="toggleSec('s4')">
+      <div class="seccion-icon">🎓</div>
+      <div class="seccion-titulo">Perfil del Egresado</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box" style="margin-bottom:12px;">
+        <p>Se aspira a formar un/a profesor/a para el Nivel Inicial que sea <strong>persona comprometida, mediador intercultural, animador de una comunidad educativa, garante de la Ley y organizador de una vida democrática, intelectual y conductor cultural</strong>.</p>
+      </div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Asumirse como ser autónomo y comprometido</strong> con la realidad sociocultural — reflexionar sobre su propia historia y aceptar sus limitaciones optimizando sus posibilidades</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Establecer vínculos</strong> basados en el respeto y la tolerancia con los demás</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Promover el aprendizaje y el desarrollo</strong> cognitivo, social, afectivo y psicomotriz de los alumnos en la franja etárea del Nivel Inicial (45 días a 5 años inclusive)</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Diseñar e implementar prácticas educativas</strong> pertinentes y acordes con la heterogeneidad de los sujetos y sus contextos</div></div>
+    </div>
+  </div>
+
+  <!-- HORARIOS COORDINACIÓN -->
+  <div class="seccion" id="s5">
+    <div class="seccion-header" onclick="toggleSec('s5')">
+      <div class="seccion-icon">🕐</div>
+      <div class="seccion-titulo">Horarios de Coordinación</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="horario-fila"><div class="dia-badge">Lunes</div><div class="horario-horas">14:00 – 16:00 hs</div></div>
+      <div class="horario-fila"><div class="dia-badge">Jueves</div><div class="horario-horas">14:00 – 16:00 hs</div></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>ISFD "José Manuel Estrada"</span> · Corrientes · Profesorado de Educación Inicial
+</footer>
+
+<script>
+  function toggleSec(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+</script>
+</body>
+</html>
