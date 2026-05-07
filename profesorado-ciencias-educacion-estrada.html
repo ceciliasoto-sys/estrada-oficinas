@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prof. Superior en Ciencias de la Educación · ISFD José Manuel Estrada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:#1b2d4f; --azul-medio:#253d6b; --azul-claro:#2e4d87;
+    --dorado:#c9a84c; --dorado-claro:#e8c97d; --dorado-suave:#fef3d0;
+    --blanco:#ffffff; --crema:#f7f4ee; --crema-dark:#edeae1;
+    --texto:#1a1a2e; --gris:#6b7280;
+    --sombra:0 4px 28px rgba(27,45,79,0.13); --radio:14px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--crema); color:var(--texto); min-height:100vh; padding-bottom:40px; }
+
+  .franja-top { height:5px; background:linear-gradient(90deg,var(--azul),var(--dorado),var(--dorado-claro),var(--dorado),var(--azul)); }
+  header { background:var(--azul); padding:0 0 24px; text-align:center; }
+  .inst-label { display:block; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--dorado); padding:18px 20px 6px; font-weight:500; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(18px,5vw,26px); color:var(--blanco); line-height:1.15; padding:0 20px; }
+  .oficina-sub { font-family:'DM Sans',sans-serif; font-size:clamp(12px,3vw,15px); color:var(--dorado-claro); font-weight:400; letter-spacing:0.5px; margin-top:5px; display:block; }
+  .linea-dorada { width:60px; height:2px; background:var(--dorado); margin:10px auto 0; }
+
+  .coord-wrap { padding:20px 16px 20px; display:flex; justify-content:center; }
+  .coord-card { background:var(--azul-medio); border:1px solid rgba(201,168,76,0.35); border-radius:var(--radio); padding:16px 18px; display:flex; align-items:center; gap:16px; width:100%; max-width:540px; position:relative; overflow:hidden; }
+  .coord-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .foto-circle { width:65px; height:65px; border-radius:50%; border:2.5px solid var(--dorado); overflow:hidden; flex-shrink:0; }
+  .foto-circle img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .coord-etiqueta { font-size:9px; letter-spacing:1.8px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:3px; }
+  .coord-nombre { font-family:'Playfair Display',serif; font-size:15px; color:var(--blanco); line-height:1.2; margin-bottom:3px; }
+  .coord-horario { font-size:11.5px; color:var(--dorado-claro); }
+
+  main { max-width:640px; margin:0 auto; padding:0 16px 20px; }
+
+  .datos-grid { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .dato-chip { background:var(--blanco); border:1px solid rgba(27,45,79,0.1); border-radius:10px; padding:10px 14px; flex:1; min-width:110px; box-shadow:var(--sombra); }
+  .dato-label { font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--gris); font-weight:600; margin-bottom:3px; }
+  .dato-valor { font-size:13px; color:var(--azul); font-weight:600; line-height:1.3; }
+
+  .seccion { background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); margin-bottom:14px; overflow:hidden; border:1px solid rgba(27,45,79,0.08); }
+  .seccion-header { display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer; user-select:none; }
+  .seccion-icon { width:38px; height:38px; border-radius:9px; background:var(--azul); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  .seccion-titulo { flex:1; font-family:'Playfair Display',serif; font-size:15px; color:var(--azul); }
+  .seccion-arrow { color:var(--dorado); font-size:20px; transition:transform .25s; }
+  .seccion.open .seccion-arrow { transform:rotate(90deg); }
+  .seccion-body { display:none; padding:0 16px 16px; border-top:1px solid var(--crema-dark); }
+  .seccion.open .seccion-body { display:block; padding-top:14px; }
+
+  .nota-box { background:#f0f4fb; border-radius:10px; padding:14px; border-left:3px solid var(--azul-claro); margin-bottom:10px; }
+  .nota-box p { font-size:13.5px; line-height:1.7; color:#374151; }
+  .nota-box ul { margin-top:8px; padding-left:18px; }
+  .nota-box ul li { font-size:13.5px; line-height:1.8; color:#374151; }
+
+  .paso { display:flex; gap:14px; margin-bottom:20px; position:relative; }
+  .paso:not(:last-child)::after { content:''; position:absolute; left:18px; top:44px; bottom:-8px; width:2px; background:linear-gradient(180deg,var(--dorado),transparent); }
+  .paso-num { width:36px; height:36px; border-radius:50%; background:var(--azul); border:2px solid var(--dorado); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--dorado-claro); flex-shrink:0; }
+  .paso-contenido { flex:1; }
+  .paso-titulo { font-size:13.5px; font-weight:700; color:var(--azul); margin-bottom:5px; }
+  .paso-desc { font-size:13px; color:#374151; line-height:1.6; }
+  .paso-desc ul { margin-top:6px; padding-left:16px; }
+  .paso-desc ul li { font-size:13px; line-height:1.7; color:#374151; }
+
+  .alerta { background:#fffbeb; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400e; margin-top:10px; line-height:1.55; }
+  .alerta::before { content:'⚠️ '; }
+  .info-box { background:#f0faf5; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#065f46; margin-top:10px; line-height:1.55; border-left:3px solid #34d399; }
+  .info-box::before { content:'ℹ️ '; }
+
+  .competencia-item { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+  .comp-dot { width:8px; height:8px; border-radius:50%; background:var(--dorado); flex-shrink:0; margin-top:6px; }
+  .comp-texto { font-size:13.5px; color:#374151; line-height:1.6; }
+
+  .horario-fila { display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; }
+  .horario-fila:last-child { margin-bottom:0; }
+  .dia-badge { background:var(--azul); color:var(--dorado-claro); font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px; white-space:nowrap; flex-shrink:0; min-width:80px; text-align:center; }
+  .horario-horas { font-size:13px; color:var(--texto); line-height:1.5; }
+
+  footer { text-align:center; font-size:12px; color:var(--gris); padding:16px; border-top:1px solid var(--crema-dark); margin-top:8px; }
+  footer span { color:var(--azul-medio); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="franja-top"></div>
+<header>
+  <span class="inst-label">Instituto Superior de Formación Docente</span>
+  <h1>José Manuel Estrada</h1>
+  <span class="oficina-sub">Profesorado Superior en Ciencias de la Educación</span>
+  <div class="linea-dorada"></div>
+
+  <div class="coord-wrap">
+    <div class="coord-card">
+      <div class="foto-circle">
+        <img src="data:image/jpeg;base64,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" alt="Prof. Martínez Sandra">
+      </div>
+      <div>
+        <div class="coord-etiqueta">Coordinadora de Carrera</div>
+        <div class="coord-nombre">Martínez, Sandra</div>
+        <div class="coord-horario">🕐 Lun: 07:45–08:25 · Mié: 09:45–12:25 · Vie: 19:20–20:00 hs</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="datos-grid">
+    <div class="dato-chip">
+      <div class="dato-label">Título</div>
+      <div class="dato-valor">Profesor Superior en Ciencias de la Educación</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Duración</div>
+      <div class="dato-valor">5 años</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Habilitante</div>
+      <div class="dato-valor">Nivel Secundario y Superior</div>
+    </div>
+  </div>
+
+  <!-- PREINSCRIPCIÓN -->
+  <div class="seccion" id="s1">
+    <div class="seccion-header" onclick="toggleSec('s1')">
+      <div class="seccion-icon">📝</div>
+      <div class="seccion-titulo">¿Cómo es la preinscripción?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá al sistema SIMA y buscá la carrera</div>
+          <div class="paso-desc">Entrá a <strong>sima.mec.gob.ar</strong> → <strong>Catálogo de Carreras</strong> → buscá por instituto o carrera → seleccioná <strong>Profesorado Superior en Ciencias de la Educación</strong> → tocá <strong>Inscribir</strong>.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá tu DNI y correo electrónico</div>
+          <div class="paso-desc">Completá el formulario con tu <strong>DNI sin puntos</strong> y tu <strong>correo electrónico</strong> — verificá que sea el correcto. Aceptá las condiciones y tocá <strong>Enviar</strong>.</div>
+          <div class="alerta">Este proceso todavía NO te pre-inscribe, solo envía el email de solicitud.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Confirmá desde tu correo</div>
+          <div class="paso-desc">Revisá tu bandeja de entrada (también spam). Abrí el mail de SIMA y hacé clic en <strong>Confirmar</strong>.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Completá la ficha y creá tu usuario SIMA</div>
+          <div class="paso-desc">Completá todos tus datos personales y creá una <strong>contraseña para tu usuario SIMA</strong> — guardala, la vas a necesitar para inscribirte a materias y rendir exámenes.</div>
+          <div class="info-box">Guardá tu usuario y contraseña de SIMA. Los necesitás para matricularte e inscribirte a mesas de examen.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">5</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Solicitá turno y presentá la documentación</div>
+          <div class="paso-desc">Solicitá turno desde SIMA para presentar en el instituto:
+            <ul>
+              <li>Fotocopia legalizada del <strong>DNI</strong></li>
+              <li>Fotocopia del <strong>Título Secundario</strong> o constancia de finalización o de materias adeudadas</li>
+            </ul>
+          </div>
+          <div class="alerta">Solicitar turno es OBLIGATORIO para presentar la documentación en el instituto.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAN DE ESTUDIO -->
+  <div class="seccion" id="s2">
+    <div class="seccion-header" onclick="toggleSec('s2')">
+      <div class="seccion-icon">📋</div>
+      <div class="seccion-titulo">Plan de Estudio</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <p>Consultá el plan de estudio completo del Profesorado Superior en Ciencias de la Educación en el sitio institucional.</p>
+      </div>
+      <a href="http://iestrada.edu.ar/portal/wp-content/uploads/2023/04/plan-de-estudio-ciencias.pdf" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul);color:var(--dorado-claro);font-size:13px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;margin-top:12px;">📄 Ver Plan de Estudio completo</a>
+    </div>
+  </div>
+
+  <!-- FORMACIÓN -->
+  <div class="seccion" id="s3">
+    <div class="seccion-header" onclick="toggleSec('s3')">
+      <div class="seccion-icon">📚</div>
+      <div class="seccion-titulo">¿Qué incluye la formación?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <ul>
+          <li>Conocimiento del <strong>sistema educativo</strong> y el trabajo docente — Pedagogía, Didáctica, Sistema y Política Educativa, Psicología Educacional, entre otras</li>
+          <li>Conocimiento de las <strong>características y necesidades</strong> de los estudiantes de Nivel Secundario y Superior</li>
+          <li>Conocimiento de las <strong>ciencias de la educación y sus enfoques</strong> — educación como proceso de subjetivación y proceso político, estadística socioeducativa, metodología de la investigación educativa, entre otras</li>
+          <li><strong>Práctica profesional progresiva</strong>: observación, planificación y evaluación en instituciones reales</li>
+          <li><strong>Residencia Pedagógica</strong>: período de dictado de clases en el Nivel Secundario</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFIL DEL EGRESADO -->
+  <div class="seccion" id="s4">
+    <div class="seccion-header" onclick="toggleSec('s4')">
+      <div class="seccion-icon">🎓</div>
+      <div class="seccion-titulo">Perfil del Egresado</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box" style="margin-bottom:12px;">
+        <p>La formación se orienta hacia un profesional con <strong>capacidad crítica para intervenir en la compleja realidad educativa</strong>, desde una perspectiva reflexiva e innovadora en los ámbitos formal y no formal.</p>
+      </div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Conducir procesos de enseñanza-aprendizaje</strong> tomando decisiones adecuadas a cada contexto y a la diversidad cultural de los sujetos</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Sólida formación académica</strong> para la comprensión crítica del campo de las ciencias de la educación</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Elaborar proyectos de intervención educativa e investigación</strong> para transformar la realidad educativa</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Intercambiar información entre pares</strong> para fortalecer la práctica docente y consolidar equipos de trabajo</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Analizar e interpretar documentos y materiales curriculares</strong> ejercitando una visión crítica y constructiva</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Comprender la dimensión ética</strong> de la función docente y reflexionar permanentemente sobre su práctica</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Participar activamente en procesos de innovación educativa</strong> y comprender la dinámica de la institución escolar</div></div>
+    </div>
+  </div>
+
+  <!-- HORARIOS COORDINACIÓN -->
+  <div class="seccion" id="s5">
+    <div class="seccion-header" onclick="toggleSec('s5')">
+      <div class="seccion-icon">🕐</div>
+      <div class="seccion-titulo">Horarios de Coordinación</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="horario-fila"><div class="dia-badge">Lunes</div><div class="horario-horas">07:45 – 08:25 hs</div></div>
+      <div class="horario-fila"><div class="dia-badge">Miércoles</div><div class="horario-horas">09:45 – 12:25 hs</div></div>
+      <div class="horario-fila"><div class="dia-badge">Viernes</div><div class="horario-horas">19:20 – 20:00 hs</div></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>ISFD "José Manuel Estrada"</span> · Corrientes · Prof. Superior en Ciencias de la Educación
+</footer>
+
+<script>
+  function toggleSec(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+</script>
+</body>
+</html>
