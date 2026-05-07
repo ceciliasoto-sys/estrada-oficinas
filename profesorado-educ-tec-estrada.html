@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profesorado de Educación Tecnológica · ISFD José Manuel Estrada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:#1b2d4f; --azul-medio:#253d6b; --azul-claro:#2e4d87;
+    --dorado:#c9a84c; --dorado-claro:#e8c97d; --dorado-suave:#fef3d0;
+    --blanco:#ffffff; --crema:#f7f4ee; --crema-dark:#edeae1;
+    --texto:#1a1a2e; --gris:#6b7280;
+    --sombra:0 4px 28px rgba(27,45,79,0.13); --radio:14px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--crema); color:var(--texto); min-height:100vh; padding-bottom:40px; }
+
+  .franja-top { height:5px; background:linear-gradient(90deg,var(--azul),var(--dorado),var(--dorado-claro),var(--dorado),var(--azul)); }
+  header { background:var(--azul); padding:0 0 24px; text-align:center; }
+  .inst-label { display:block; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--dorado); padding:18px 20px 6px; font-weight:500; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(20px,5.5vw,28px); color:var(--blanco); line-height:1.15; padding:0 20px; }
+  .oficina-sub { font-family:'DM Sans',sans-serif; font-size:clamp(12px,3vw,15px); color:var(--dorado-claro); font-weight:400; letter-spacing:0.5px; margin-top:5px; display:block; }
+  .linea-dorada { width:60px; height:2px; background:var(--dorado); margin:10px auto 0; }
+
+  .coord-wrap { padding:20px 16px 20px; display:flex; justify-content:center; }
+  .coord-card { background:var(--azul-medio); border:1px solid rgba(201,168,76,0.35); border-radius:var(--radio); padding:16px 18px; display:flex; align-items:center; gap:16px; width:100%; max-width:540px; position:relative; overflow:hidden; }
+  .coord-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .foto-circle { width:65px; height:65px; border-radius:50%; border:2.5px solid var(--dorado); overflow:hidden; flex-shrink:0; }
+  .foto-circle img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .coord-etiqueta { font-size:9px; letter-spacing:1.8px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:3px; }
+  .coord-nombre { font-family:'Playfair Display',serif; font-size:15px; color:var(--blanco); line-height:1.2; margin-bottom:3px; }
+  .coord-horario { font-size:11.5px; color:var(--dorado-claro); }
+
+  main { max-width:640px; margin:0 auto; padding:0 16px 20px; }
+
+  .datos-grid { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .dato-chip { background:var(--blanco); border:1px solid rgba(27,45,79,0.1); border-radius:10px; padding:10px 14px; flex:1; min-width:110px; box-shadow:var(--sombra); }
+  .dato-label { font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--gris); font-weight:600; margin-bottom:3px; }
+  .dato-valor { font-size:13px; color:var(--azul); font-weight:600; line-height:1.3; }
+
+  .seccion { background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); margin-bottom:14px; overflow:hidden; border:1px solid rgba(27,45,79,0.08); }
+  .seccion-header { display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer; user-select:none; }
+  .seccion-icon { width:38px; height:38px; border-radius:9px; background:var(--azul); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  .seccion-titulo { flex:1; font-family:'Playfair Display',serif; font-size:15px; color:var(--azul); }
+  .seccion-arrow { color:var(--dorado); font-size:20px; transition:transform .25s; }
+  .seccion.open .seccion-arrow { transform:rotate(90deg); }
+  .seccion-body { display:none; padding:0 16px 16px; border-top:1px solid var(--crema-dark); }
+  .seccion.open .seccion-body { display:block; padding-top:14px; }
+
+  .nota-box { background:#f0f4fb; border-radius:10px; padding:14px; border-left:3px solid var(--azul-claro); margin-bottom:10px; }
+  .nota-box p { font-size:13.5px; line-height:1.7; color:#374151; }
+  .nota-box ul { margin-top:8px; padding-left:18px; }
+  .nota-box ul li { font-size:13.5px; line-height:1.8; color:#374151; }
+
+  .paso { display:flex; gap:14px; margin-bottom:20px; position:relative; }
+  .paso:not(:last-child)::after { content:''; position:absolute; left:18px; top:44px; bottom:-8px; width:2px; background:linear-gradient(180deg,var(--dorado),transparent); }
+  .paso-num { width:36px; height:36px; border-radius:50%; background:var(--azul); border:2px solid var(--dorado); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--dorado-claro); flex-shrink:0; }
+  .paso-contenido { flex:1; }
+  .paso-titulo { font-size:13.5px; font-weight:700; color:var(--azul); margin-bottom:5px; }
+  .paso-desc { font-size:13px; color:#374151; line-height:1.6; }
+  .paso-desc ul { margin-top:6px; padding-left:16px; }
+  .paso-desc ul li { font-size:13px; line-height:1.7; color:#374151; }
+
+  .alerta { background:#fffbeb; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400e; margin-top:10px; line-height:1.55; }
+  .alerta::before { content:'⚠️ '; }
+  .info-box { background:#f0faf5; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#065f46; margin-top:10px; line-height:1.55; border-left:3px solid #34d399; }
+  .info-box::before { content:'ℹ️ '; }
+
+  .competencia-item { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+  .comp-dot { width:8px; height:8px; border-radius:50%; background:var(--dorado); flex-shrink:0; margin-top:6px; }
+  .comp-texto { font-size:13.5px; color:#374151; line-height:1.6; }
+
+  .horario-fila { display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; }
+  .horario-fila:last-child { margin-bottom:0; }
+  .dia-badge { background:var(--azul); color:var(--dorado-claro); font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px; white-space:nowrap; flex-shrink:0; min-width:80px; text-align:center; }
+  .horario-horas { font-size:13px; color:var(--texto); line-height:1.5; }
+
+  footer { text-align:center; font-size:12px; color:var(--gris); padding:16px; border-top:1px solid var(--crema-dark); margin-top:8px; }
+  footer span { color:var(--azul-medio); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="franja-top"></div>
+<header>
+  <span class="inst-label">Instituto Superior de Formación Docente</span>
+  <h1>José Manuel Estrada</h1>
+  <span class="oficina-sub">Profesorado de Educación Tecnológica</span>
+  <div class="linea-dorada"></div>
+
+  <div class="coord-wrap">
+    <div class="coord-card">
+      <div class="foto-circle">
+        <img src="data:image/jpeg;base64,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" alt="Prof. Espíndola Margarita">
+      </div>
+      <div>
+        <div class="coord-etiqueta">Coordinadora de Carrera</div>
+        <div class="coord-nombre">Espíndola, Margarita</div>
+        <div class="coord-horario">🕐 Viernes: 18:00 – 22:00 hs</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="datos-grid">
+    <div class="dato-chip">
+      <div class="dato-label">Título</div>
+      <div class="dato-valor">Profesor/a en Educación Tecnológica</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Duración</div>
+      <div class="dato-valor">4 años</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Habilitante</div>
+      <div class="dato-valor">Nivel Inicial, Primario y Secundario</div>
+    </div>
+  </div>
+
+  <!-- PREINSCRIPCIÓN -->
+  <div class="seccion" id="s1">
+    <div class="seccion-header" onclick="toggleSec('s1')">
+      <div class="seccion-icon">📝</div>
+      <div class="seccion-titulo">¿Cómo es la preinscripción?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá al sistema SIMA y buscá la carrera</div>
+          <div class="paso-desc">Entrá a <strong>sima.mec.gob.ar</strong> → <strong>Catálogo de Carreras</strong> → buscá por instituto o carrera → seleccioná <strong>Profesorado de Educación Tecnológica</strong> → tocá <strong>Inscribir</strong>.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá tu DNI y correo electrónico</div>
+          <div class="paso-desc">Completá el formulario con tu <strong>DNI sin puntos</strong> y tu <strong>correo electrónico</strong> — verificá que sea el correcto. Aceptá las condiciones y tocá <strong>Enviar</strong>.</div>
+          <div class="alerta">Este proceso todavía NO te pre-inscribe, solo envía el email de solicitud.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Confirmá desde tu correo</div>
+          <div class="paso-desc">Revisá tu bandeja de entrada (también spam). Abrí el mail de SIMA y hacé clic en <strong>Confirmar</strong>.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Completá la ficha y creá tu usuario SIMA</div>
+          <div class="paso-desc">Completá todos tus datos personales y creá una <strong>contraseña para tu usuario SIMA</strong> — guardala, la vas a necesitar para inscribirte a materias y rendir exámenes.</div>
+          <div class="info-box">Guardá tu usuario y contraseña de SIMA. Los necesitás para matricularte e inscribirte a mesas de examen.</div>
+        </div>
+      </div>
+      <div class="paso">
+        <div class="paso-num">5</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Solicitá turno y presentá la documentación</div>
+          <div class="paso-desc">Solicitá turno desde SIMA para presentar en el instituto:
+            <ul>
+              <li>Fotocopia legalizada del <strong>DNI</strong></li>
+              <li>Fotocopia del <strong>Título Secundario</strong> o constancia de finalización o de materias adeudadas</li>
+            </ul>
+          </div>
+          <div class="alerta">Solicitar turno es OBLIGATORIO para presentar la documentación en el instituto.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PLAN DE ESTUDIO -->
+  <div class="seccion" id="s2">
+    <div class="seccion-header" onclick="toggleSec('s2')">
+      <div class="seccion-icon">📋</div>
+      <div class="seccion-titulo">Plan de Estudio</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <p>Consultá el plan de estudio completo del Profesorado de Educación Tecnológica en el sitio institucional.</p>
+      </div>
+      <a href="http://iestrada.edu.ar/portal/wp-content/uploads/2023/04/plan-de-estudio-educ-tec.pdf" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul);color:var(--dorado-claro);font-size:13px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;margin-top:12px;">📄 Ver Plan de Estudio completo</a>
+    </div>
+  </div>
+
+  <!-- FORMACIÓN -->
+  <div class="seccion" id="s3">
+    <div class="seccion-header" onclick="toggleSec('s3')">
+      <div class="seccion-icon">📚</div>
+      <div class="seccion-titulo">¿Qué incluye la formación?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <ul>
+          <li>Conocimiento del <strong>sistema educativo</strong> y el trabajo docente — Pedagogía, Didáctica, Sistema y Política Educativa, Psicología Educacional, entre otras</li>
+          <li>Conocimiento de las <strong>características y necesidades</strong> de los estudiantes del Nivel Secundario</li>
+          <li>Conocimiento de la <strong>educación tecnológica y sus enfoques</strong> — actividades, procesos y tecnologías (Diseño y modelización, Procesos de control); estudios socioculturales (Historia de las técnicas, Etnografía de los oficios); ciencias experimentales (Física, Biología), entre otras</li>
+          <li><strong>Práctica profesional progresiva</strong>: observación, planificación y evaluación en instituciones reales</li>
+          <li><strong>Residencia Pedagógica</strong>: período de dictado de clases en los niveles habilitantes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFIL DEL EGRESADO -->
+  <div class="seccion" id="s4">
+    <div class="seccion-header" onclick="toggleSec('s4')">
+      <div class="seccion-icon">🎓</div>
+      <div class="seccion-titulo">Perfil del Egresado</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box" style="margin-bottom:12px;">
+        <p>Profesionales docentes capacitados para <strong>planificar, conducir y evaluar procesos de enseñanza y aprendizaje</strong> en el área de Educación Tecnológica en todos los niveles del sistema educativo.</p>
+      </div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Interpretar la estructura de productos y procesos tecnológicos</strong> en el marco del enfoque sistémico, identificando componentes y sus relaciones mediante flujos de materia, energía o información</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Seleccionar, implementar y evaluar metodología innovadora</strong> de la educación tecnológica que contemple las demandas de la educación general básica</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Actitud crítica y flexible</strong> para la evaluación continua de su tarea profesional y la incorporación de los cambios tecnológicos que demanda la acción educativa</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Actitud ética de respeto e integración</strong> a los diferentes grupos con quienes compartirán su actividad docente</div></div>
+    </div>
+  </div>
+
+  <!-- HORARIOS COORDINACIÓN -->
+  <div class="seccion" id="s5">
+    <div class="seccion-header" onclick="toggleSec('s5')">
+      <div class="seccion-icon">🕐</div>
+      <div class="seccion-titulo">Horarios de Coordinación</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="horario-fila"><div class="dia-badge">Viernes</div><div class="horario-horas">18:00 – 22:00 hs</div></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>ISFD "José Manuel Estrada"</span> · Corrientes · Profesorado de Educación Tecnológica
+</footer>
+
+<script>
+  function toggleSec(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+</script>
+</body>
+</html>
