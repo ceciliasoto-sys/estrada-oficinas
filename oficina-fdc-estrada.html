@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formación Docente Continua · ISFD José Manuel Estrada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:#1b2d4f; --azul-medio:#253d6b; --azul-claro:#2e4d87;
+    --dorado:#c9a84c; --dorado-claro:#e8c97d; --dorado-suave:#fef3d0;
+    --blanco:#ffffff; --crema:#f7f4ee; --crema-dark:#edeae1;
+    --texto:#1a1a2e; --gris:#6b7280;
+    --sombra:0 4px 28px rgba(27,45,79,0.13); --radio:14px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--crema); color:var(--texto); min-height:100vh; padding-bottom:80px; }
+
+  .franja-top { height:5px; background:linear-gradient(90deg,var(--azul),var(--dorado),var(--dorado-claro),var(--dorado),var(--azul)); }
+  header { background:var(--azul); padding:0 0 24px; text-align:center; }
+  .inst-label { display:block; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--dorado); padding:18px 20px 6px; font-weight:500; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(20px,5.5vw,28px); color:var(--blanco); line-height:1.15; padding:0 20px; }
+  .oficina-sub { font-family:'DM Sans',sans-serif; font-size:clamp(12px,3vw,15px); color:var(--dorado-claro); font-weight:400; letter-spacing:0.5px; margin-top:5px; display:block; }
+  .linea-dorada { width:60px; height:2px; background:var(--dorado); margin:10px auto 0; }
+
+  /* EQUIPO */
+  .equipo-wrap { padding:20px 16px 0; display:flex; justify-content:center; }
+  .equipo-grid { width:100%; max-width:540px; display:flex; flex-direction:column; gap:10px; }
+
+  .persona-card { background:var(--azul-medio); border:1px solid rgba(201,168,76,0.35); border-radius:var(--radio); padding:14px 18px; display:flex; align-items:center; gap:14px; position:relative; overflow:hidden; }
+  .persona-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .foto-frame { width:60px; height:60px; border-radius:50%; border:2px solid var(--dorado); overflow:hidden; flex-shrink:0; background:var(--azul-claro); display:flex; align-items:center; justify-content:center; font-size:22px; color:rgba(255,255,255,0.5); }
+  .foto-frame img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .persona-info { flex:1; }
+  .persona-etiqueta { font-size:9px; letter-spacing:1.8px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:3px; }
+  .persona-nombre { font-family:'Playfair Display',serif; font-size:14px; color:var(--blanco); line-height:1.2; margin-bottom:2px; }
+  .persona-cargo { font-size:11px; color:rgba(255,255,255,0.6); font-style:italic; margin-bottom:3px; }
+  .persona-horario { font-size:11.5px; color:var(--dorado-claro); font-weight:500; }
+
+  /* CORREO */
+  .correo-wrap { padding:8px 16px 0; display:flex; justify-content:center; }
+  .correo-card { background:rgba(201,168,76,0.12); border:1px solid rgba(201,168,76,0.3); border-radius:10px; padding:10px 16px; width:100%; max-width:540px; display:flex; align-items:center; gap:10px; }
+  .correo-card a { font-size:12.5px; color:var(--dorado-claro); word-break:break-all; text-decoration:none; }
+  .correo-card a:hover { text-decoration:underline; }
+
+  /* HORARIO ADMIN */
+  .horario-wrap { padding:8px 16px 20px; display:flex; justify-content:center; }
+  .horario-card { background:rgba(201,168,76,0.08); border:1px solid rgba(201,168,76,0.2); border-radius:10px; padding:10px 16px; width:100%; max-width:540px; }
+  .horario-title { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:6px; }
+  .horario-fila { display:flex; align-items:center; gap:8px; font-size:12px; color:var(--blanco); margin-bottom:4px; }
+  .horario-fila:last-child { margin-bottom:0; }
+  .horario-dot { width:5px; height:5px; border-radius:50%; background:var(--dorado); flex-shrink:0; }
+
+  main { max-width:640px; margin:0 auto; padding:24px 16px 20px; }
+
+  /* BUSCADOR */
+  .search-wrap { margin-bottom:20px; position:relative; }
+  .search-input { width:100%; padding:12px 16px 12px 44px; border-radius:12px; border:1.5px solid var(--crema-dark); background:var(--blanco); font-family:'DM Sans',sans-serif; font-size:14px; color:var(--texto); box-shadow:var(--sombra); outline:none; transition:border .2s; }
+  .search-input:focus { border-color:var(--dorado); }
+  .search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; pointer-events:none; }
+  .search-results-count { font-size:12px; color:var(--gris); margin-top:6px; padding-left:4px; min-height:16px; }
+  .no-results { text-align:center; padding:24px; color:var(--gris); font-size:14px; display:none; }
+  .no-results.visible { display:block; }
+
+  .seccion-label { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .seccion-label::before,.seccion-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .seccion-label span { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--dorado); font-weight:600; white-space:nowrap; }
+
+  /* CARDS */
+  .tramite-card { background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); margin-bottom:12px; overflow:hidden; border:1px solid rgba(27,45,79,0.08); transition:box-shadow .2s; }
+  .tramite-card:hover { box-shadow:0 8px 36px rgba(27,45,79,0.16); }
+  .tramite-card.search-hidden { display:none; }
+  .tramite-header { display:flex; align-items:center; gap:14px; padding:16px 16px 14px; cursor:pointer; user-select:none; }
+  .tramite-icon { width:42px; height:42px; border-radius:10px; background:var(--azul); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:19px; }
+  .tramite-titulo { flex:1; font-family:'Playfair Display',serif; font-size:15.5px; color:var(--azul); line-height:1.3; }
+  .tramite-titulo small { font-family:'DM Sans',sans-serif; font-size:11.5px; color:var(--gris); font-weight:400; display:block; margin-top:2px; }
+  .tramite-arrow { color:var(--dorado); font-size:20px; transition:transform .25s; line-height:1; }
+  .tramite-card.open .tramite-arrow { transform:rotate(90deg); }
+  .tramite-body { display:none; padding:0 16px 16px; border-top:1px solid var(--crema-dark); }
+  .tramite-card.open .tramite-body { display:block; padding-top:14px; }
+
+  .nota-box { background:#f0f4fb; border-radius:10px; padding:14px; border-left:3px solid var(--azul-claro); margin-bottom:10px; }
+  .nota-label { font-size:10.5px; text-transform:uppercase; letter-spacing:1px; font-weight:600; color:var(--azul-medio); margin-bottom:8px; }
+  .nota-box p { font-size:13.5px; line-height:1.6; color:#374151; }
+  .nota-box ul { margin-top:7px; padding-left:18px; }
+  .nota-box ul li { font-size:13.5px; line-height:1.8; color:#374151; }
+  .nota-box ol { margin-top:7px; padding-left:20px; }
+  .nota-box ol li { font-size:13.5px; line-height:1.85; color:#374151; }
+
+  .docs-label { font-size:10.5px; text-transform:uppercase; letter-spacing:1px; font-weight:600; color:var(--dorado); margin:14px 0 8px; }
+  .doc-item { display:flex; align-items:flex-start; gap:8px; font-size:13.5px; color:#374151; margin-bottom:7px; line-height:1.5; }
+  .doc-icon { width:24px; height:24px; background:var(--dorado-suave); border:1px solid rgba(201,168,76,0.4); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+
+  .alerta { background:#fffbeb; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400e; margin-top:12px; line-height:1.55; }
+  .alerta::before { content:'⚠️ '; }
+  .info-box { background:#f0faf5; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#065f46; margin-top:10px; line-height:1.55; border-left:3px solid #34d399; }
+  .info-box::before { content:'ℹ️ '; }
+
+  /* PROPUESTAS — chips */
+  .propuestas-grid { display:flex; flex-direction:column; gap:8px; }
+  .propuesta-item { background:var(--crema); border-radius:10px; padding:10px 14px; border-left:3px solid var(--dorado); }
+  .propuesta-tipo { font-size:9.5px; letter-spacing:1.5px; text-transform:uppercase; font-weight:600; color:var(--dorado); margin-bottom:3px; }
+  .propuesta-titulo { font-size:13px; color:var(--azul); line-height:1.4; font-weight:500; }
+
+  /* POSTÍTULOS */
+  .postitulo-item { background:var(--crema); border-radius:10px; padding:12px 14px; margin-bottom:8px; border-left:3px solid var(--azul-claro); }
+  .postitulo-nombre { font-size:13.5px; color:var(--azul); font-weight:600; line-height:1.4; margin-bottom:6px; }
+  .postitulo-datos { display:flex; flex-wrap:wrap; gap:6px; margin-top:4px; }
+  .chip { font-size:11px; background:var(--azul); color:var(--dorado-claro); padding:2px 8px; border-radius:20px; font-weight:500; }
+  .chip-verde { background:#065f46; color:#a7f3d0; }
+  .chip-gris { background:#374151; color:#e5e7eb; }
+
+  mark { background:rgba(201,168,76,0.3); border-radius:3px; padding:0 2px; font-style:normal; }
+
+  .aviso-general { background:var(--azul); border-radius:var(--radio); padding:20px; margin-top:8px; position:relative; overflow:hidden; }
+  .aviso-general::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .aviso-general h3 { font-family:'Playfair Display',serif; font-size:15px; color:var(--dorado-claro); margin-bottom:10px; }
+  .aviso-general p { font-size:13.5px; color:rgba(255,255,255,0.85); line-height:1.6; }
+  .aviso-general ul { padding-left:18px; margin-top:8px; }
+  .aviso-general ul li { font-size:13px; color:rgba(255,255,255,0.8); line-height:1.8; }
+
+  /* NAV */
+  .nav-bar { position:fixed; bottom:0; left:0; right:0; background:var(--azul); border-top:2px solid var(--dorado); display:flex; z-index:100; box-shadow:0 -4px 20px rgba(27,45,79,0.25); }
+  .nav-btn { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:9px 4px; cursor:pointer; border:none; background:transparent; gap:2px; transition:background .15s; -webkit-tap-highlight-color:transparent; }
+  .nav-btn:hover,.nav-btn.active { background:rgba(201,168,76,0.15); }
+  .nav-btn .nav-icon { font-size:18px; }
+  .nav-btn .nav-label { font-size:8.5px; letter-spacing:0.3px; text-transform:uppercase; color:var(--dorado); font-weight:600; white-space:nowrap; }
+
+  footer { text-align:center; font-size:12px; color:var(--gris); padding:16px; border-top:1px solid var(--crema-dark); margin-top:8px; }
+  footer span { color:var(--azul-medio); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="franja-top"></div>
+<header>
+  <span class="inst-label">Instituto Superior de Formación Docente</span>
+  <h1>José Manuel Estrada</h1>
+  <span class="oficina-sub">Oficina de Formación Docente Continua</span>
+  <div class="linea-dorada"></div>
+
+  <div class="equipo-wrap">
+    <div class="equipo-grid">
+
+      <!-- Coordinador -->
+      <div class="persona-card">
+        <div class="foto-frame">
+          <img src="data:image/jpeg;base64,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" alt="Prof. Fabián Alcaraz">
+        </div>
+        <div class="persona-info">
+          <div class="persona-etiqueta">Coordinación</div>
+          <div class="persona-nombre">Alcaraz, Fabián</div>
+          <div class="persona-cargo">Prof. — Coordinador FDC</div>
+          <div class="persona-horario">🕐 Lunes y miércoles · 09:10 – 13:00 hs</div>
+        </div>
+      </div>
+
+      <!-- Personal administrativo -->
+      <div class="persona-card">
+        <div class="foto-frame">👤</div>
+        <div class="persona-info">
+          <div class="persona-etiqueta">Personal Administrativo</div>
+          <div class="persona-nombre">Barberán, Dénisse</div>
+          <div class="persona-cargo">Administrativa FDC</div>
+          <div class="persona-horario">🕐 Lunes a viernes · 17:00 – 21:00 hs</div>
+        </div>
+      </div>
+
+      <div class="persona-card">
+        <div class="foto-frame">👤</div>
+        <div class="persona-info">
+          <div class="persona-etiqueta">Personal Administrativo</div>
+          <div class="persona-nombre">Torres, Jaime</div>
+          <div class="persona-cargo">Administrativo FDC</div>
+          <div class="persona-horario">🕐 Lunes a viernes · 17:00 – 21:00 hs</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="correo-wrap">
+    <div class="correo-card">
+      <a href="mailto:desarrolloprofesional@iestrada.edu.ar">✉️ desarrolloprofesional@iestrada.edu.ar</a>
+    </div>
+  </div>
+
+  <div class="horario-wrap">
+    <div class="horario-card">
+      <div class="horario-title">🕐 Horarios de atención al público</div>
+      <div class="horario-fila"><div class="horario-dot"></div> Coordinación: lunes y miércoles de 09:10 a 13:00 hs</div>
+      <div class="horario-fila"><div class="horario-dot"></div> Administración: lunes a viernes de 17:00 a 21:00 hs</div>
+      <div class="horario-fila"><div class="horario-dot"></div> Inscripción Ordinaria: Av. Alfonsín y Bustamante · 17:00 a 20:00 hs</div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" type="text" id="buscador" placeholder="Buscar trámite, certificado, postítulo..." autocomplete="off">
+    <div class="search-results-count" id="resultCount"></div>
+  </div>
+
+  <div class="seccion-label"><span>Trámites y servicios</span></div>
+
+  <!-- CERTIFICADOS Y CONSTANCIAS -->
+  <div class="tramite-card" id="c1" data-keywords="certificado analitico constancia postitulo jornada conversatorio coformador adscripto profesor dictante asistencia participacion qr validacion">
+    <div class="tramite-header" onclick="toggleCard('c1')">
+      <div class="tramite-icon">📜</div>
+      <div class="tramite-titulo">Certificados, Analíticos y Constancias<small>postítulos, jornadas y otros</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 Servicios disponibles</div>
+        <ul>
+          <li>Entrega de <strong>Certificados</strong> y confección de <strong>Analíticos de Postítulos</strong></li>
+          <li>Recepción de notas de solicitud de analíticos de postítulos emitidos con <strong>validación QR</strong></li>
+          <li>Confección e impresión de certificados de <strong>jornadas, encuentros, conversatorios</strong>, docentes co-formadores, adscriptos y profesores dictantes</li>
+          <li>Confección de <strong>Constancias de Asistencia y Participación</strong> a propuestas de Formación Docente</li>
+          <li>Emisión de <strong>constancias diversas</strong> requeridas por los docentes</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANALÍTICO DE POSTÍTULOS -->
+  <div class="tramite-card" id="c2" data-keywords="analitico postitulo solicitud nota rectora dni partida nacimiento titulo docente resolucion ministerial cohorte comision">
+    <div class="tramite-header" onclick="toggleCard('c2')">
+      <div class="tramite-icon">🎓</div>
+      <div class="tramite-titulo">Solicitud de Analítico de Postítulo<small>pasos para tramitarlo</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📝 Paso 1 — Nota dirigida a la Rectora</div>
+        <p>La nota debe incluir:</p>
+        <ul>
+          <li><strong>Datos del postítulo:</strong> nombre, número de Resolución Ministerial, cohorte y comisión</li>
+          <li><strong>Datos del solicitante:</strong> nombre y apellido, DNI, fecha y lugar de nacimiento, celular o correo electrónico</li>
+        </ul>
+      </div>
+      <div class="docs-label">📎 Documentación a adjuntar</div>
+      <div class="doc-item"><div class="doc-icon">🪪</div> Fotocopia de <strong>DNI</strong> (frente y dorso)</div>
+      <div class="doc-item"><div class="doc-icon">📄</div> <strong>Partida de Nacimiento</strong></div>
+      <div class="doc-item"><div class="doc-icon">🎓</div> <strong>Título Docente</strong></div>
+      <div class="nota-box" style="margin-top:12px;">
+        <div class="nota-label">🏫 Paso 2 — Presentar en Mesa de Entradas</div>
+        <p>Presentar la nota completa en <strong>Mesa de Entradas</strong> en el horario de atención al público.</p>
+      </div>
+      <div class="alerta">Solo se tramita el analítico de postítulos <strong>finalizados</strong> con su correspondiente número de Resolución Ministerial. La documentación debe estar completa al momento de la presentación.</div>
+    </div>
+  </div>
+
+  <!-- CONSTANCIA DE TRABAJO -->
+  <div class="tramite-card" id="c3" data-keywords="constancia trabajo docente ejercicio dictado postitulo personal formacion continua horario">
+    <div class="tramite-header" onclick="toggleCard('c3')">
+      <div class="tramite-icon">📃</div>
+      <div class="tramite-titulo">Constancia de Trabajo<small>para docentes dictantes de postítulos</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 Cómo solicitarla</div>
+        <ul>
+          <li>Acercarse <strong>personalmente</strong> a la Oficina de Formación Docente Continua</li>
+          <li>Horario de atención: <strong>lunes a viernes de 17:00 a 21:00 hs</strong></li>
+          <li>El trámite es de carácter <strong>personal</strong></li>
+        </ul>
+      </div>
+      <div class="info-box">Solo pueden solicitarla docentes que se encuentren <strong>en ejercicio</strong> en el dictado de postítulos en el Área de Formación Docente Continua.</div>
+    </div>
+  </div>
+
+  <!-- INSCRIPCIÓN ORDINARIA -->
+  <div class="tramite-card" id="c4" data-keywords="inscripcion ordinaria interinatos suplencias carpeta oficio documentacion autenticada escribano qr padron reclamo antecedentes plataforma virtual">
+    <div class="tramite-header" onclick="toggleCard('c4')">
+      <div class="tramite-icon">📝</div>
+      <div class="tramite-titulo">Inscripción Ordinaria<small>interinatos y suplencias</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 Pasos para inscribirse</div>
+        <ol>
+          <li>Concurrir al instituto — <strong>Av. Alfonsín y calle Bustamante</strong> — de <strong>17:00 a 20:00 hs</strong> en las oficinas de Formación Continua</li>
+          <li>Si es la <strong>primera inscripción</strong>: traer una <strong>carpeta tamaño oficio de tres solapas plástica</strong>. Si ya tiene carpeta, presentarla nuevamente</li>
+          <li>Toda la documentación debe estar <strong>autenticada por escribano público</strong> con oblea o QR</li>
+        </ol>
+      </div>
+      <div class="alerta">El legajo de Formación Continua <strong>no es el mismo</strong> que el de otros concursos ordinarios o extraordinarios de la institución.</div>
+      <div class="nota-box" style="margin-top:12px;">
+        <div class="nota-label">⚖️ Reclamos al padrón</div>
+        <p>Luego de la publicación hay <strong>10 días hábiles</strong> para hacer reclamos, ingresando por nota en Mesa de Entradas de 8:00 a 20:00 hs. Vencido el plazo, el padrón quedará firme.</p>
+      </div>
+      <div class="nota-box" style="margin-top:10px;">
+        <div class="nota-label">📌 Importante recordar</div>
+        <ul>
+          <li>Solo se valoran <strong>Título, Postítulos y Posgrados</strong> presentados con su certificado analítico</li>
+          <li>Solo se valoran antecedentes <strong>relacionados con el área de capacitación</strong></li>
+          <li>Quienes no presenten antecedentes como disertantes o capacitadores <strong>no serán incluidos en el padrón</strong></li>
+          <li>Acreditación en manejo de plataforma y herramientas virtuales: <strong>EXCLUYENTE</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROPUESTAS FORMATIVAS -->
+  <div class="tramite-card" id="c5" data-keywords="jornada curso propuesta formativa ia inteligencia artificial matematica bullying violencia suicidio abp digital pensamiento evaluacion retroalimentacion multimedia">
+    <div class="tramite-header" onclick="toggleCard('c5')">
+      <div class="tramite-icon">🗓️</div>
+      <div class="tramite-titulo">Propuestas Formativas 2025–2026<small>jornadas y cursos disponibles</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="propuestas-grid">
+        <div class="propuesta-item"><div class="propuesta-tipo">Jornada</div><div class="propuesta-titulo">Prevención del suicidio en contextos educativos: herramientas de detección, acompañamiento y cuidado institucional</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Jornada</div><div class="propuesta-titulo">Violencia escolar y bullying: herramientas de detección e intervención desde un enfoque de derechos</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Jornada</div><div class="propuesta-titulo">El juego en la clase de Matemática</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Jornada</div><div class="propuesta-titulo">IA en el Aula: Evaluar y Retroalimentar con Inteligencia Artificial</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Jornada</div><div class="propuesta-titulo">Enseñar a Pensar: Estrategias Clave para el Desarrollo del Pensamiento</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Curso</div><div class="propuesta-titulo">Transformar la enseñanza: ABP y educación digital para el desarrollo de capacidades</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Curso</div><div class="propuesta-titulo">Comunicar para Enseñar: Herramientas digitales para organizar, interactuar y vincular en el aula</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Jornada</div><div class="propuesta-titulo">Diseño de Trabajos Prácticos en el Nivel Superior: ¿Evaluar respuestas o generar experiencias?</div></div>
+        <div class="propuesta-item"><div class="propuesta-tipo">Jornada</div><div class="propuesta-titulo">Estrategias didácticas con IA: generación de contenidos multimedia para la enseñanza</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- POSTÍTULOS EN CURSO -->
+  <div class="tramite-card" id="c6" data-keywords="postitulo diplomatura especializacion en curso virtual 600 400 horas docentes primario secundario superior gestion evaluacion tecnologias lengua didactica">
+    <div class="tramite-header" onclick="toggleCard('c6')">
+      <div class="tramite-icon">📚</div>
+      <div class="tramite-titulo">Postítulos en Curso<small>diplomaturas y especializaciones activas</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+
+      <div class="postitulo-item">
+        <div class="postitulo-nombre">Diplomatura Superior en Gestión Administrativa para el Fortalecimiento de la Función Directiva en las Escuelas del Siglo XXI</div>
+        <div class="postitulo-datos">
+          <span class="chip chip-verde">En curso</span>
+          <span class="chip">R.M. 2475/2024</span>
+          <span class="chip chip-gris">Virtual · 600 hs</span>
+        </div>
+        <p style="font-size:12px;color:var(--gris);margin-top:6px;">Destinatarios: docentes de Nivel Primario y Secundario</p>
+      </div>
+
+      <div class="postitulo-item">
+        <div class="postitulo-nombre">Diplomatura Superior en Gestión de la Evaluación Formativa en Procesos de Enseñanza y Aprendizaje Bimodales</div>
+        <div class="postitulo-datos">
+          <span class="chip chip-verde">En curso · 2ª Cohorte</span>
+          <span class="chip">R.M. 4224/2024</span>
+          <span class="chip chip-gris">Virtual · 600 hs</span>
+        </div>
+        <p style="font-size:12px;color:var(--gris);margin-top:6px;">Destinatarios: docentes de Nivel Primario y Secundario</p>
+      </div>
+
+      <div class="postitulo-item">
+        <div class="postitulo-nombre">Diplomatura Superior en Evaluación desde los Ámbitos de Gestión Institucional <em style="font-size:11px;">(en convenio con UDA)</em></div>
+        <div class="postitulo-datos">
+          <span class="chip chip-verde">En curso</span>
+          <span class="chip">R.M. 2683/2025</span>
+          <span class="chip chip-gris">Virtual · 600 hs</span>
+        </div>
+        <p style="font-size:12px;color:var(--gris);margin-top:6px;">Destinatarios: docentes de Nivel Inicial, Primario y Secundario</p>
+      </div>
+
+      <div class="postitulo-item">
+        <div class="postitulo-nombre">Diplomatura Superior en Tecnologías Emergentes Aplicadas a la Educación</div>
+        <div class="postitulo-datos">
+          <span class="chip chip-verde">1ª y 2ª Cohorte simultáneas</span>
+          <span class="chip">R.M. 1015/2024</span>
+          <span class="chip chip-gris">Virtual · 600 hs</span>
+        </div>
+        <p style="font-size:12px;color:var(--gris);margin-top:6px;">Destinatarios: docentes de Nivel Primario, Secundario y Superior</p>
+      </div>
+
+      <div class="postitulo-item">
+        <div class="postitulo-nombre">Especialización Superior en Didáctica de la Educación Tecnológica</div>
+        <div class="postitulo-datos">
+          <span class="chip chip-verde">1ª y 2ª Cohorte simultáneas</span>
+          <span class="chip">R.M. 4106/2024</span>
+          <span class="chip chip-gris">Virtual · 400 hs</span>
+        </div>
+        <p style="font-size:12px;color:var(--gris);margin-top:6px;">Destinatarios: docentes de Educación Tecnológica de Secundaria y Primaria en ejercicio</p>
+      </div>
+
+      <div class="postitulo-item">
+        <div class="postitulo-nombre">Especialización Superior en Didáctica de la Lengua en el Segundo Ciclo de la Educación Primaria</div>
+        <div class="postitulo-datos">
+          <span class="chip chip-verde">1ª y 2ª Cohorte simultáneas</span>
+          <span class="chip">R.M. 2490/2024</span>
+          <span class="chip chip-gris">Virtual · 400 hs</span>
+        </div>
+        <p style="font-size:12px;color:var(--gris);margin-top:6px;">Destinatarios: docentes de Nivel Primario y profesionales con título docente habilitante</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- POSTÍTULOS PRESENTADOS -->
+  <div class="tramite-card" id="c7" data-keywords="postitulo presentado proximo capacidades enseñanza transformadora lectura escritura alfabetizacion tecnologias digitales gestion administrativa segunda cohorte">
+    <div class="tramite-header" onclick="toggleCard('c7')">
+      <div class="tramite-icon">🔜</div>
+      <div class="tramite-titulo">Postítulos Presentados<small>próximas propuestas en evaluación</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 En proceso de aprobación ministerial</div>
+        <ul>
+          <li>Diplomatura Superior en Desarrollo de Capacidades para una Enseñanza Transformadora</li>
+          <li>Diplomatura Superior en Gestión Administrativa para el Fortalecimiento de la Función Directiva — <strong>2ª Cohorte</strong></li>
+          <li>Diplomatura Superior en Tecnologías Digitales Aplicadas a la Educación</li>
+          <li>Diplomatura Superior en Lectura, Escritura y Alfabetización desde una Perspectiva Interdisciplinaria</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-results" id="noResults">No se encontraron resultados para tu búsqueda.</div>
+
+  <div class="aviso-general">
+    <h3>📌 Ante cualquier consulta</h3>
+    <p>Comunicarse por los canales oficiales de la institución o dirigirse personalmente a la Oficina de Formación Docente Continua en el horario de atención.</p>
+    <ul>
+      <li><a href="mailto:desarrolloprofesional@iestrada.edu.ar" style="color:var(--dorado-claro);">✉️ desarrolloprofesional@iestrada.edu.ar</a></li>
+      <li>🕐 Administración: lunes a viernes de 17:00 a 21:00 hs</li>
+      <li>🕐 Coordinación: lunes y miércoles de 09:10 a 13:00 hs</li>
+    </ul>
+  </div>
+</main>
+
+<footer>
+  <span>ISFD "José Manuel Estrada"</span> · Corrientes · Formación Docente Continua
+</footer>
+
+<nav class="nav-bar">
+  <button class="nav-btn" onclick="navTo('c2',this)"><span class="nav-icon">🎓</span><span class="nav-label">Analítico</span></button>
+  <button class="nav-btn" onclick="navTo('c4',this)"><span class="nav-icon">📝</span><span class="nav-label">Inscripción</span></button>
+  <button class="nav-btn" onclick="navTo('c5',this)"><span class="nav-icon">🗓️</span><span class="nav-label">Jornadas</span></button>
+  <button class="nav-btn" onclick="navTo('c6',this)"><span class="nav-icon">📚</span><span class="nav-label">Postítulos</span></button>
+  <button class="nav-btn" onclick="navTo('c1',this)"><span class="nav-icon">📜</span><span class="nav-label">Certif.</span></button>
+</nav>
+
+<script>
+  function toggleCard(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+  function navTo(id, btn) {
+    const card = document.getElementById(id);
+    if (!card.classList.contains('open')) card.classList.add('open');
+    setTimeout(() => card.scrollIntoView({ behavior:'smooth', block:'start' }), 50);
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+  const buscador = document.getElementById('buscador');
+  const resultCount = document.getElementById('resultCount');
+  const noResults = document.getElementById('noResults');
+  const cards = document.querySelectorAll('.tramite-card');
+  buscador.addEventListener('input', function() {
+    const query = this.value.trim().toLowerCase();
+    if (!query) {
+      cards.forEach(card => card.classList.remove('search-hidden','open'));
+      resultCount.textContent = '';
+      noResults.classList.remove('visible');
+      return;
+    }
+    let found = 0;
+    cards.forEach(card => {
+      const kw = (card.dataset.keywords||'').toLowerCase();
+      const tit = card.querySelector('.tramite-titulo').textContent.toLowerCase();
+      const body = card.querySelector('.tramite-body').textContent.toLowerCase();
+      if (kw.includes(query)||tit.includes(query)||body.includes(query)) {
+        card.classList.remove('search-hidden');
+        card.classList.add('open');
+        found++;
+      } else {
+        card.classList.add('search-hidden');
+        card.classList.remove('open');
+      }
+    });
+    resultCount.textContent = found > 0 ? found+' resultado'+(found!==1?'s':'')+' encontrado'+(found!==1?'s':'') : '';
+    noResults.classList.toggle('visible', found===0);
+  });
+</script>
+</body>
+</html>
