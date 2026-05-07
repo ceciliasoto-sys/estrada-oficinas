@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mesa de Entradas · Horario · ISFD José Manuel Estrada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:#1b2d4f; --azul-medio:#253d6b; --azul-claro:#2e4d87;
+    --dorado:#c9a84c; --dorado-claro:#e8c97d; --dorado-suave:#fef3d0;
+    --blanco:#ffffff; --crema:#f7f4ee; --crema-dark:#edeae1;
+    --gris:#6b7280; --sombra:0 4px 28px rgba(27,45,79,0.13); --radio:14px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--crema); min-height:100vh; padding-bottom:30px; }
+
+  .franja-top { height:5px; background:linear-gradient(90deg,var(--azul),var(--dorado),var(--dorado-claro),var(--dorado),var(--azul)); }
+  header { background:var(--azul); padding:0 0 24px; text-align:center; }
+  .inst-label { display:block; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--dorado); padding:18px 20px 6px; font-weight:500; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(22px,6vw,30px); color:var(--blanco); line-height:1.15; padding:0 20px; }
+  .oficina-sub { font-family:'DM Sans',sans-serif; font-size:clamp(12px,3vw,15px); color:var(--dorado-claro); font-weight:400; margin-top:5px; display:block; }
+  .linea-dorada { width:60px; height:2px; background:var(--dorado); margin:10px auto 0; }
+
+  main { max-width:540px; margin:0 auto; padding:28px 16px 20px; }
+
+  /* TURNO CARD */
+  .turno-card { background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); margin-bottom:16px; overflow:hidden; border:1px solid rgba(27,45,79,0.08); }
+  .turno-header { background:var(--azul); padding:14px 18px; position:relative; overflow:hidden; }
+  .turno-header::after { content:''; position:absolute; bottom:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .turno-nombre { font-family:'Playfair Display',serif; font-size:17px; color:var(--blanco); margin-bottom:2px; }
+  .turno-horas { font-size:13px; color:var(--dorado-claro); font-weight:600; }
+  .turno-body { padding:16px 18px; display:flex; align-items:center; gap:14px; }
+  .foto-frame { width:64px; height:64px; border-radius:50%; border:2.5px solid var(--dorado); overflow:hidden; flex-shrink:0; background:var(--azul-claro); display:flex; align-items:center; justify-content:center; font-size:22px; color:rgba(255,255,255,0.5); }
+  .foto-frame img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .resp-info { flex:1; }
+  .resp-etiqueta { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris); font-weight:600; margin-bottom:3px; }
+  .resp-nombre { font-family:'Playfair Display',serif; font-size:15px; color:var(--azul); }
+
+  /* CORREO */
+  .correo-card { background:var(--azul); border-radius:var(--radio); padding:16px 20px; margin-top:8px; text-align:center; position:relative; overflow:hidden; }
+  .correo-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .correo-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:6px; }
+  .correo-link { font-size:14px; color:var(--dorado-claro); font-weight:600; text-decoration:none; }
+  .correo-link:hover { text-decoration:underline; }
+
+  footer { text-align:center; font-size:12px; color:var(--gris); padding:16px; border-top:1px solid var(--crema-dark); margin-top:16px; }
+  footer span { color:var(--azul); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="franja-top"></div>
+<header>
+  <span class="inst-label">Instituto Superior de Formación Docente</span>
+  <h1>José Manuel Estrada</h1>
+  <span class="oficina-sub">Mesa de Entradas · Horarios de Atención</span>
+  <div class="linea-dorada"></div>
+</header>
+
+<main>
+
+  <div class="turno-card">
+    <div class="turno-header">
+      <div class="turno-nombre">Turno Mañana</div>
+      <div class="turno-horas">🕐 08:00 – 12:00 hs</div>
+    </div>
+    <div class="turno-body">
+      <div class="foto-frame">👤</div>
+      <div class="resp-info">
+        <div class="resp-etiqueta">Responsable</div>
+        <div class="resp-nombre">Marelo, Graciela</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="turno-card">
+    <div class="turno-header">
+      <div class="turno-nombre">Turno Tarde</div>
+      <div class="turno-horas">🕐 13:00 – 17:00 hs</div>
+    </div>
+    <div class="turno-body">
+      <div class="foto-frame">👤</div>
+      <div class="resp-info">
+        <div class="resp-etiqueta">Responsable</div>
+        <div class="resp-nombre">Marelo, Graciela</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="turno-card">
+    <div class="turno-header">
+      <div class="turno-nombre">Turno Vespertino</div>
+      <div class="turno-horas">🕐 17:00 – 21:00 hs</div>
+    </div>
+    <div class="turno-body">
+      <div class="foto-frame">👤</div>
+      <div class="resp-info">
+        <div class="resp-etiqueta">Responsable</div>
+        <div class="resp-nombre">Rausch, Carla</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="correo-card">
+    <div class="correo-label">Correo institucional</div>
+    <a class="correo-link" href="mailto:mesadeentrada@iestrada.edu.ar">✉️ mesadeentrada@iestrada.edu.ar</a>
+  </div>
+
+</main>
+
+<footer>
+  <span>ISFD "José Manuel Estrada"</span> · Corrientes · Mesa de Entradas
+</footer>
+
+</body>
+</html>
