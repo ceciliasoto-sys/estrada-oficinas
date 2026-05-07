@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profesorado en Filosofía · ISFD José Manuel Estrada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:#1b2d4f; --azul-medio:#253d6b; --azul-claro:#2e4d87;
+    --dorado:#c9a84c; --dorado-claro:#e8c97d; --dorado-suave:#fef3d0;
+    --blanco:#ffffff; --crema:#f7f4ee; --crema-dark:#edeae1;
+    --texto:#1a1a2e; --gris:#6b7280;
+    --sombra:0 4px 28px rgba(27,45,79,0.13); --radio:14px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--crema); color:var(--texto); min-height:100vh; padding-bottom:40px; }
+
+  .franja-top { height:5px; background:linear-gradient(90deg,var(--azul),var(--dorado),var(--dorado-claro),var(--dorado),var(--azul)); }
+  header { background:var(--azul); padding:0 0 24px; text-align:center; }
+  .inst-label { display:block; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--dorado); padding:18px 20px 6px; font-weight:500; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(22px,6vw,30px); color:var(--blanco); line-height:1.15; padding:0 20px; }
+  .oficina-sub { font-family:'DM Sans',sans-serif; font-size:clamp(12px,3vw,15px); color:var(--dorado-claro); font-weight:400; letter-spacing:0.5px; margin-top:5px; display:block; }
+  .linea-dorada { width:60px; height:2px; background:var(--dorado); margin:10px auto 0; }
+
+  .coord-wrap { padding:20px 16px 0; display:flex; justify-content:center; }
+  .coord-card { background:var(--azul-medio); border:1px solid rgba(201,168,76,0.35); border-radius:var(--radio); padding:16px 18px; display:flex; align-items:center; gap:16px; width:100%; max-width:540px; position:relative; overflow:hidden; }
+  .coord-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .foto-circle { width:65px; height:65px; border-radius:50%; border:2.5px solid var(--dorado); overflow:hidden; flex-shrink:0; }
+  .foto-circle img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .coord-etiqueta { font-size:9px; letter-spacing:1.8px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:3px; }
+  .coord-nombre { font-family:'Playfair Display',serif; font-size:15px; color:var(--blanco); line-height:1.2; margin-bottom:3px; }
+  .coord-horario { font-size:11.5px; color:var(--dorado-claro); }
+
+  .sima-wrap { padding:10px 16px 20px; display:flex; justify-content:center; }
+  .sima-btn { display:flex; align-items:center; justify-content:center; gap:8px; background:var(--dorado); color:var(--azul); font-size:13px; font-weight:700; padding:11px 20px; border-radius:10px; text-decoration:none; width:100%; max-width:540px; transition:background .2s; }
+  .sima-btn:hover { background:var(--dorado-claro); }
+
+  main { max-width:640px; margin:0 auto; padding:20px 16px 20px; }
+
+  .datos-grid { display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap; }
+  .dato-chip { background:var(--blanco); border:1px solid rgba(27,45,79,0.1); border-radius:10px; padding:10px 14px; flex:1; min-width:110px; box-shadow:var(--sombra); }
+  .dato-label { font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--gris); font-weight:600; margin-bottom:3px; }
+  .dato-valor { font-size:13px; color:var(--azul); font-weight:600; line-height:1.3; }
+
+  .seccion { background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); margin-bottom:14px; overflow:hidden; border:1px solid rgba(27,45,79,0.08); }
+  .seccion-header { display:flex; align-items:center; gap:12px; padding:14px 16px; cursor:pointer; user-select:none; }
+  .seccion-icon { width:38px; height:38px; border-radius:9px; background:var(--azul); display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0; }
+  .seccion-titulo { flex:1; font-family:'Playfair Display',serif; font-size:15px; color:var(--azul); }
+  .seccion-arrow { color:var(--dorado); font-size:20px; transition:transform .25s; }
+  .seccion.open .seccion-arrow { transform:rotate(90deg); }
+  .seccion-body { display:none; padding:0 16px 16px; border-top:1px solid var(--crema-dark); }
+  .seccion.open .seccion-body { display:block; padding-top:14px; }
+
+  .nota-box { background:#f0f4fb; border-radius:10px; padding:14px; border-left:3px solid var(--azul-claro); margin-bottom:10px; }
+  .nota-box p { font-size:13.5px; line-height:1.7; color:#374151; }
+  .nota-box ul { margin-top:8px; padding-left:18px; }
+  .nota-box ul li { font-size:13.5px; line-height:1.8; color:#374151; }
+
+  /* PASOS PREINSCRIPCIÓN */
+  .paso { display:flex; gap:14px; margin-bottom:20px; position:relative; }
+  .paso:not(:last-child)::after { content:''; position:absolute; left:18px; top:44px; bottom:-8px; width:2px; background:linear-gradient(180deg,var(--dorado),transparent); }
+  .paso-num { width:36px; height:36px; border-radius:50%; background:var(--azul); border:2px solid var(--dorado); display:flex; align-items:center; justify-content:center; font-family:'Playfair Display',serif; font-size:15px; font-weight:700; color:var(--dorado-claro); flex-shrink:0; }
+  .paso-contenido { flex:1; }
+  .paso-titulo { font-size:13.5px; font-weight:700; color:var(--azul); margin-bottom:5px; }
+  .paso-desc { font-size:13px; color:#374151; line-height:1.6; }
+  .paso-desc ul { margin-top:6px; padding-left:16px; }
+  .paso-desc ul li { font-size:13px; line-height:1.7; color:#374151; }
+
+  .alerta-sima { background:#fffbeb; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400e; margin-top:10px; line-height:1.55; }
+  .alerta-sima::before { content:'⚠️ '; }
+
+  .info-box { background:#f0faf5; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#065f46; margin-top:10px; line-height:1.55; border-left:3px solid #34d399; }
+  .info-box::before { content:'ℹ️ '; }
+
+  .competencia-item { display:flex; gap:10px; margin-bottom:10px; align-items:flex-start; }
+  .comp-dot { width:8px; height:8px; border-radius:50%; background:var(--dorado); flex-shrink:0; margin-top:6px; }
+  .comp-texto { font-size:13.5px; color:#374151; line-height:1.6; }
+
+  .horario-fila { display:flex; align-items:flex-start; gap:10px; margin-bottom:8px; }
+  .horario-fila:last-child { margin-bottom:0; }
+  .dia-badge { background:var(--azul); color:var(--dorado-claro); font-size:11px; font-weight:600; padding:3px 8px; border-radius:6px; white-space:nowrap; flex-shrink:0; min-width:80px; text-align:center; }
+  .horario-horas { font-size:13px; color:var(--texto); line-height:1.5; }
+
+  footer { text-align:center; font-size:12px; color:var(--gris); padding:16px; border-top:1px solid var(--crema-dark); margin-top:8px; }
+  footer span { color:var(--azul-medio); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="franja-top"></div>
+<header>
+  <span class="inst-label">Instituto Superior de Formación Docente</span>
+  <h1>José Manuel Estrada</h1>
+  <span class="oficina-sub">Profesorado en Filosofía</span>
+  <div class="linea-dorada"></div>
+
+  <div class="coord-wrap">
+    <div class="coord-card">
+      <div class="foto-circle">
+        <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAA0JCgsKCA0LCgsODg0PEyAVExISEyccHhcgLikxMC4pLSwzOko+MzZGNywtQFdBRkxOUlNSMj5aYVpQYEpRUk//2wBDAQ4ODhMREyYVFSZPNS01T09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT09PT0//wAARCADIAMgDASIAAhEBAxEB/8QAGwAAAQUBAQAAAAAAAAAAAAAAAAIDBAUGAQf/xAA3EAABAwIEBQICCgICAwAAAAABAAIDBBEFEiExEyJBUWEGcTKBFCNCUpGhscHR4QczFfBDYnL/xAAaAQEAAwEBAQAAAAAAAAAAAAAAAgMEAQUG/8QAIREBAQACAwADAQEBAQAAAAAAAAECEQMhMRJBUSIFBDL/2gAMAwEAAhEDEQA/APTkIQgEIQgEIQgEIQgEISXvbGwveQGgXJKBSjVNdTUv+6UA/dGpVLiOOl2ZlOcrNs/UrOTz1UpdwgbdxqVXlya8TmP601X6is1zaandqNHvNrfJZ52OYjTOcTI5zXb5ruCpKuoqYGElk7ndy7T8lTvrqqaWz3HbVvT81H5Wu6kaN/qyo+lCZ0hD2G1mmwI9la0Xrxx0qae4HVp/lYRtM55JcQT2unA3hnK+FzSeoK7tzT0+l9XU01i+CQN6uBByj2WhikZLG2SNwc1wuCOq8bgE0XNDJcdCQtPgHqGeltFNcx3s5rvs+QuzP9Lj+PQEJuCZk8LZY3AtcLghOKxAIQhAIQhAIQhAIQhAIQhAIQhAIQhAl72xsL3kBoFySsbjOOPrKgwU4JY07X0Pkqw9R1znv+hxOIa3V5HfsqIsytszR53Kpzy+lmOP2ZyuJJec5A+EaKLKHNfndnlkGzGCzWqdVzwYbTB0mpPQ7krPz4lU1bnCNjmgbN2Cq2no9VVT3xuzRtL2jNlN9R1v/Kp5Mjg6YAlpuA3sn2vrmSNc7M5t/hdqkPgs+RjI+R/MP4U505YRSyNcRmDge6mnMywlbmiO3Wyq42yU8n1gswHey0GHmOZpjuC1w2tZLTSIYnwnNC67DqD/ACpNJO2d/DkAZMPhPdKYTTSPgmbeMHr0Hf2SZqPLJlvYEXjeE9cbb0nWluahlNj8TB+oWnXmmG1coLJHDLUQOF/K9Gp5mz08czdntBVuF60hlDqEIU0QhCEAhCEAhCEAhCEAhCEAmaucU9LJKfsjT3TyqPUM2WmbCDq83PsFzK6m3ZN1nJXmSR0jrl7jf5pcbQ13NuBc+ENbls47u+EfumqqQQ0T5erjlHlY7WiRS1wdWYmdOVn5f2pcVK1oADQl0cGRl3avdzOPlSw0DU6BR2vkkRjSx/cCS+kjcQcg0VgIwQklu47LjvSlqcPbJfMPZVxpn0kweCQ3c26ELTObdV1ZHcEKcyqFxldka2anZV2zZeV/t3SWRZ4nU5OrbuiP7JWEuGWSFwBBFiEpkZFsvxMOiljkpymqageA5kp68rx3C2/pmcmlfTuNzGbtPcFYksAncwaNlF2+P+lX3peryVrY36Zxb/vzVmN1UMp02aFxdV6oIQhAIQhAIQhAIQhAIQhALMYxOJq9/wB2Pl+a0VTKIKaSU/ZaSsVPIXOyX1tmcfdU82WppZxz7dzF5cep0b4UatHEmhgb8MYzH36J5kgzm2zBcqpkxF0cjnmCTKTfORa4WbVvjRjqXtaxtTwYHCx2VdRYpTTi2bK7sVaxljhykJqz1ZLvx0AAAWTbhuU/a6Q8C6CI/RRJ23BCmyll7Zm/iozywi2YfihtFw9pFZIO7LpyN4MpcdiSD4XKbkqJXdMhsmIn3eRfc/ipRVn6dmFnexv+O6do5OHUB43Y+/4pEvPE1w32Kbgdrc9WqUqt6XC8SwseNnC6cUDBpM+HReGhT1qniihCELoEIQgEIQgEIQgEIQgpfUFSWw8Bh7F37BZaR5YwuPxOVxjrw2pkbrcXLvJP9KiF5ZMxNmN6+Vj5cv6aeOdEVsz6PDXlgvK/os5/zuJTVHAghzPtq0+FppI+O/O74QLAWUWXDqd72uDTG9uzmixHzCceWM9WXHLXSkgxJ80zRPQZSSTmiB6fqtZQStdAx0Zu0gEEa3CpoMGMEwkiqJM1+V3ZXFFEaaERkl1iSCQOq7ncb4YTKepplIbc6KBWzPcxxY+wtr4Ts8pJa0jdVteyaaBsJjPBcSZchs52u3hRxnfaWV6V8ktJI+0tZYjdSoqGlmbdla8+1lQYnhzDK90FI+OMuGUDbL5HfymGUdVDV5aEzZLXs8WV+uuqol77jV08b6eZzXSmWNzeVx3TEn1crhtZ1wfC5RMqWxN+kbqRNZ7bne26z26qywQzZ7s6nX5pDXWfYd1EOeGRsjTsfxUiVzTaRh0dquyoWN56Yn4lFlO7dFeLJ+kZvrZYidxcLVrVhd4qMvXUIQpohCEIBCEIBCEIBcXVGxGcU1BNKfstNvdLdDGYxViavmdbQk29hoqqqqHMia0bucAB2BKkZS+QvcLAnQdyolS36xpO5laFgt3dtk6mlvGzl0TgjuNQuR2DbJb5xGy4Fyi9xzXWs3omS4l3NuEpr3ygucbeEvhfVukzC/VEUOU55QegTwAdqAmdeISNgpEL2uB0s4I4Q5umoFvZMmFh1AU5zDa5CYk0auu6V9UyzNOigx1YuWvNiO6sKlwLVm685ZDbq5dk2ry6W7zy3A5Tu07JpoGUtaTboD0SqMPNOxrtSRfXqmpQGvOUkHsueVH1ovS0zo8Qhv1Nj+i368x9PzE4jAAeYPA916ctXF4z5+uoQhWIBCEIBCEIBCEIBUvqaW1GyK/xuurpZPHakT1zg03bGMo9+qr5brFPjm8lSBa7j0GigVthNAO8gKsHG/INbbqnxeUh92bxtv8ANY560rskhMOcXu1NgD1UiN7ZomSstZzQUh9O2aN8bxo5Iu2cblDb3Fz5SHNL26PsqTDYDR1UtNXSPMJ/1v3yHsfCvGYYXZDTVDHh3UG1lP4o7k9NiMs0zXSm2aco66pqaCshJ5r82UXIN1Wz4q2CfhSlvEAuGtOp1tsnxp8p+r/i3ZZRJ3aFcp5HSxh7mubcXsd0ibqFHaSDM42IVJUt4lU2MEXve3dXszVncMP0z1HJINWMuG+w/tWYfqjkrSNaIuGzwAUxNEHOJI+O9lIc4GVvuF0j6qM/dd+RUI5Uz0hQcbFGSOF2xjMvQ1lvR8bWPqHdyACtStXHP5UZ3sIQhWIBCEIBCEIBCFxxs0nsgg4rXto4bDWRw0HbysZUzkAvPM4nTyVPxSqzvfm1JcdT2VLmMswdv0YP3WPly+VaePHUPNJjjIJu47lUmISGSaRo+7r+KtKqVsMWp0G57lUjSXvkkdu82+ShilVtgFWDF9Ee7maMzfIV1cWWJEroqpkjOUhwAK0mEYgK6N2YZZGOLHDobdQu2faWOX0k1UGc52WzdQeqjBjGOuQ+J3dpI/RWXhKsOoSVb9KSWJ0rrMdM/W9y47p2kw6GF/EcxvE79lYusTom7gLtyrl0WGX62CZe0ZksydAo1TUNiYSSoCtxypFNRyOB5yLN91WelYcgmlO5FgmsVe6rnYHaNJsArXCGCOjc4W1urfMWfLvJKZqASdC/RSGfFkO238KM/ljiH/tc/gpLhdwO4cFXKlVvg1U+ikcZAeGTrbceVsYZWTRNkY4Oa4XBGxWLw2pLwAA0vZ0I37gq9pnwAl9PKYXE80R0sVq470ozna7Qm4Xl8YJ36pxWqwhCEAhCEAo9dIYqSR4JFhqR0CfVZi2K4dSwPhqKqESPBaIy67j8hquXwjIYlmmqnMYLM6Dx5UZmWMljTd3U9lypq3TShtObtdoD4CWGtgi2DnkcxOwWLL1qniDWc2gub91EmLYY2t3edh3UisqBGMx1cdA3uVWOeW5p5nXedvP9Lkm3aanuZ4oxqQbn5Kw9PPIlqLb8TMFWx7mV3xP5WAq0wuI07mk6X3U745j60rJQbX0ThlBb5US126Jtwd3Kr2vOyzBt9VEfUXNxslFhTfBufC65SHTvOjdAo0jXSnmPup/B0s0bpiqywwk7ADdJXLGcrZR9OLW/+Nl1eYYL0IsN/wCVlo5eNVSyH7YOnz0WowY3w0eDZW8k1FGN3dpFSQ3I07PP7J5soaQx226i1/8AoiePsP1/BNVkgHNe3LbwqYmn3cJuNSyWcPibsVOir53kfSQ51urCAf7VHRVPEZkkGYgWzdQpVMQ6YsdMAzuTsrMbYhZHpNE5rqZhbtYfopCqcClvCYRKJWMa1zHXvynofbVWy2RnoQhCAWV9ZerWYDE2mpQ2WukFwDqIx3P7BaSsqY6OjmqpjaOFhe4+ALrwPFK+bE8UnrZzeSVxcfHYfIaILDEPU+NYgC2oxCYs+6w5AfkLJzC8OmmZxZXGON+pJ+J39KDhNIyebiTAmNhADR9o9lp2R5RxZHWYwECMKnlz11FmGO+6kRvZBE1rI2nLsXFQ6yolcNJWD87fJJxKqio4WhxHEI0ACpeO6YmRxFhsLWWaS3urtydJj25Dny53AXzP0CrqmtiBu53Ed2bt+Kh1lQ6UOAJIa6yiA6arRhx/qrLP8WWGyPqsVYZDo0GwGwWpawC2iymCkR1bZTtmAWuaDcEqvl9accLMZb9pcL9gU/lUNpsQbKexwLL3VScNmPXcLvDtul3XC7TVcDTjbZZ/1PUcOjEbTzSHL8uqu5nutoLrFY5VOqcQcCbti5B+6t4sd5KuXLWKvjfkkGtr6Fa7BJb0mTuSfy/pY4jVaHCJuGIr/dB/BXc03Gfjva4mdxC6E6cRl2+4UF54kJa7ciw9+yexAF0bXxHmYcwUdzxJG2dgBD9Ht8rKvcpXmMHOCSNNN0/HOwzBpN2OOU33F+6THbPmII8lS3Cnc2zhlJ+0FOVGxTT4rX4VVgUVVJC8C5yO0P8AKu8P/wAkYrDZtZDBVN6m2R34jT8lmcYgeyfma4kdR1Crdlrw8Z8vXrtB/kbCKizauKelcepGdo+Y1/JC8kD7IUnHrP8AkvFhS4O3Doz9ZVm7vDAf3NvzXko3J8q/9Y4p/wAr6hqpmuvFG7hRf/Lf5NyqBvwoJtLWughLGmzg67T2uLK6wmsbV3zuvO1tnjo4DYrMFPUNQ6mqo5m9Dr5Crz45lE8ctVMxKrLsRIluWsNj3+Sl0sUfDc2wfDJqHtUTFIGVL/pdO4PDtXsvq0qBDPNATwnub7KPw+WPTvy1e1rPgc3M+lImY7cA8w+SpnxSRuIkY5pG4Isp7MUqMtnuBtsbKHPPJUSXkcTfQKWHynrl1b0mULLQjzqtXh9S2opmhx+sYLO/lZiAZWAKRDNJC8SRmxH5rNld172XB8uKYz2NUwap9lhoq/D6+KpjtcCQbtKlhx6qDDZZdU+SFw2skcRtuqbdM1oLnENb3JRzRnEqltLRSzndjTbyei8/cSTcm5O60PqXEo542U0DswzZnkbHss4tfDjrHbJz3+tfjqsqCYGENbbiR6gdx/39VWrkcxjcHRk5gdCrMpuKZdNRTVQkhu0gkaFp/T3S2sDOdgvE/UjsqKGqYZBIHCJx+IWuCrqgrIzMI2kOY/cW691kzwsX45SpUbGu5Xajx+qckpiyPK512u2JSqV8MjyGEGxsW9Qm3iamnexzi+mfqAfsnwoxKqbFW56OLMTxI7633beyplOrZHioeH7C7RbaygHdbMJ0z5egb2Qhu90KaJ12pJ76pLfhCV+ySByj2QccuFdK4g615sdVzdAGi6uDi7EM0zR21Qdk5RtvI53bRRzusV//ADYfLlkWDRypY8rjRohY30uIaS11xf3Clx4jVxiwmJHZwuoi5quI5YY32J7sVqiLZmj2aos88k5vI9zvcpqxTVQ/hwuIOp0C7Ju6QymHHjcteINQ/PK53Toml12q4Fuk1NPmssrllcr9upJYDtolLhNhddRJbcG3ZTKSqNM4uFienhQ2julALlmyXS2hxCm4he4TRvvfNGQfyVrDjFLPZkkwzd3MsD79isrZGqrvFjU/nVviTYRISYnR3GhaczSqk6EnoliaTJkzEt7FNna3dTxmojbsDQBC6UKSJROt106AIQjri4QhCDnQLo2QhAOPKpNE20YPdCFTzf8Alv8A8+b5KmhCELK97F1FkIR2hQa593Bg6alCFbwz+nn/AOjlZw9fdQkrZCFreCEl5u4N6boQgEoIQg70QhCAXPtAIQjjp1KEIQf/2Q==" alt="Prof. Giménez Mirta">
+      </div>
+      <div>
+        <div class="coord-etiqueta">Coordinadora de Carrera</div>
+        <div class="coord-nombre">Giménez, Mirta</div>
+        <div class="coord-horario">🕐 Miércoles: 09:00–11:00 · 17:20–18:00 · 19:20–20:40 hs</div>
+      </div>
+    </div>
+  </div>
+
+
+</header>
+
+<main>
+
+  <!-- DATOS RÁPIDOS -->
+  <div class="datos-grid">
+    <div class="dato-chip">
+      <div class="dato-label">Título</div>
+      <div class="dato-valor">Profesor en Filosofía</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Duración</div>
+      <div class="dato-valor">4 años</div>
+    </div>
+    <div class="dato-chip">
+      <div class="dato-label">Habilitante</div>
+      <div class="dato-valor">Nivel Secundario</div>
+    </div>
+  </div>
+
+  <!-- PREINSCRIPCIÓN -->
+  <div class="seccion" id="s1">
+    <div class="seccion-header" onclick="toggleSec('s1')">
+      <div class="seccion-icon">📝</div>
+      <div class="seccion-titulo">¿Cómo es la preinscripción?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+
+      <div class="paso">
+        <div class="paso-num">1</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá al sistema SIMA y buscá la carrera</div>
+          <div class="paso-desc">
+            Entrá a <strong>sima.mec.gob.ar</strong> → hacé clic en <strong>Catálogo de Carreras</strong> → buscá por instituto o carrera → seleccioná <strong>Profesorado en Filosofía</strong> → tocá <strong>Inscribir</strong>.
+          </div>
+        </div>
+      </div>
+
+      <div class="paso">
+        <div class="paso-num">2</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Ingresá tu DNI y correo electrónico</div>
+          <div class="paso-desc">
+            Completá el formulario con tu <strong>DNI sin puntos</strong> y tu <strong>correo electrónico</strong> — verificá que sea el correcto porque ahí te llegará la confirmación. Aceptá las condiciones y tocá <strong>Enviar</strong>.
+          </div>
+          <div class="alerta-sima">Este proceso todavía NO te pre-inscribe, solo envía el email de solicitud.</div>
+        </div>
+      </div>
+
+      <div class="paso">
+        <div class="paso-num">3</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Confirmá desde tu correo</div>
+          <div class="paso-desc">
+            Revisá tu bandeja de entrada (también spam). Abrí el mail de SIMA y hacé clic en <strong>Confirmar</strong> para continuar el proceso.
+          </div>
+        </div>
+      </div>
+
+      <div class="paso">
+        <div class="paso-num">4</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Completá la ficha y creá tu usuario SIMA</div>
+          <div class="paso-desc">
+            Completá todos tus datos personales. Creá una <strong>contraseña para tu usuario SIMA</strong> — guardala porque la vas a necesitar para matricularte y rendir exámenes. Finalizá el proceso.
+          </div>
+          <div class="info-box">Guardá tu usuario y contraseña de SIMA. Los necesitás para inscribirte a materias y a mesas de examen.</div>
+        </div>
+      </div>
+
+      <div class="paso">
+        <div class="paso-num">5</div>
+        <div class="paso-contenido">
+          <div class="paso-titulo">Solicitá turno y presentá la documentación</div>
+          <div class="paso-desc">
+            Solicitá turno desde SIMA para presentar en el instituto:
+            <ul>
+              <li>Fotocopia legalizada del <strong>DNI</strong></li>
+              <li>Fotocopia del <strong>Título Secundario</strong> o constancia de finalización o de materias adeudadas</li>
+            </ul>
+          </div>
+          <div class="alerta-sima">Solicitar turno es OBLIGATORIO para presentar la documentación en el instituto.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PLAN DE ESTUDIO -->
+  <div class="seccion" id="s2">
+    <div class="seccion-header" onclick="toggleSec('s2')">
+      <div class="seccion-icon">📋</div>
+      <div class="seccion-titulo">Plan de Estudio</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <p>Podés consultar el plan de estudio completo del Profesorado en Filosofía en el sitio institucional.</p>
+      </div>
+      <a href="http://iestrada.edu.ar/portal/wp-content/uploads/2023/04/plan-de-estudio-filosofia.pdf" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:8px;background:var(--azul);color:var(--dorado-claro);font-size:13px;font-weight:700;padding:11px 20px;border-radius:10px;text-decoration:none;margin-top:12px;">📄 Ver Plan de Estudio completo</a>
+    </div>
+  </div>
+
+  <!-- FORMACIÓN -->
+  <div class="seccion" id="s3">
+    <div class="seccion-header" onclick="toggleSec('s3')">
+      <div class="seccion-icon">📚</div>
+      <div class="seccion-titulo">¿Qué incluye la formación?</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="nota-box">
+        <ul>
+          <li>Conocimiento del <strong>sistema educativo</strong>, la escuela y el trabajo docente — Pedagogía, Didáctica, Sistema y Política Educativa, Psicología Educacional, entre otras</li>
+          <li>Conocimiento de las <strong>características y necesidades</strong> de los estudiantes de Nivel Secundario y Superior</li>
+          <li>Conocimiento de la <strong>filosofía y sus enfoques de enseñanza</strong> — filosofía política, del lenguaje, ética, estética, entre otras</li>
+          <li><strong>Práctica profesional progresiva</strong>: observación, planificación y evaluación en instituciones reales</li>
+          <li><strong>Residencia Pedagógica</strong>: período de dictado de clases en el Nivel Secundario</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- PERFIL DEL EGRESADO -->
+  <div class="seccion" id="s4">
+    <div class="seccion-header" onclick="toggleSec('s4')">
+      <div class="seccion-icon">🎓</div>
+      <div class="seccion-titulo">Perfil del Egresado</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Competencias teóricas</strong> para la elaboración y transferencia de contenidos</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Competencias hermenéuticas</strong> para la comprensión crítica de sistemas de valores y modelos de vida</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Competencias crítico-reflexivas</strong> para la valoración de razones que fundamenten el quehacer científico, social, político y educativo</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Competencias para planificar, conducir y evaluar</strong> procesos de enseñanza de la disciplina</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Competencias para la producción de conocimiento</strong> a partir de respuestas alternativas a problemas de la comunidad</div></div>
+      <div class="competencia-item"><div class="comp-dot"></div><div class="comp-texto"><strong>Competencia intercultural</strong> para fomentar el diálogo entre culturas, el respeto y la tolerancia</div></div>
+    </div>
+  </div>
+
+  <!-- HORARIOS COORDINACIÓN -->
+  <div class="seccion" id="s5">
+    <div class="seccion-header" onclick="toggleSec('s5')">
+      <div class="seccion-icon">🕐</div>
+      <div class="seccion-titulo">Horarios de Coordinación</div>
+      <div class="seccion-arrow">›</div>
+    </div>
+    <div class="seccion-body">
+      <div class="horario-fila">
+        <div class="dia-badge">Miércoles</div>
+        <div class="horario-horas">09:00 – 11:00 hs<br>17:20 – 18:00 hs<br>19:20 – 20:40 hs</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span>ISFD "José Manuel Estrada"</span> · Corrientes · Profesorado en Filosofía
+</footer>
+
+<script>
+  function toggleSec(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+</script>
+</body>
+</html>
