@@ -40,7 +40,8 @@
   /* CORREO */
   .correo-wrap { padding:8px 16px 0; display:flex; justify-content:center; }
   .correo-card { background:rgba(201,168,76,0.12); border:1px solid rgba(201,168,76,0.3); border-radius:10px; padding:10px 16px; width:100%; max-width:540px; display:flex; align-items:center; gap:10px; }
-  .correo-card span { font-size:12.5px; color:var(--dorado-claro); word-break:break-all; }
+  .correo-card a { font-size:12.5px; color:var(--dorado-claro); word-break:break-all; text-decoration:none; }
+  .correo-card a:hover { text-decoration:underline; }
 
   /* HORARIO ADMIN */
   .horario-wrap { padding:8px 16px 20px; display:flex; justify-content:center; }
@@ -180,7 +181,7 @@
 
   <div class="correo-wrap">
     <div class="correo-card">
-      <span>✉️ desarrolloprofesional@iestrada.edu.ar</span>
+      <a href="mailto:desarrolloprofesional@iestrada.edu.ar">✉️ desarrolloprofesional@iestrada.edu.ar</a>
     </div>
   </div>
 
@@ -425,7 +426,7 @@
     <h3>📌 Ante cualquier consulta</h3>
     <p>Comunicarse por los canales oficiales de la institución o dirigirse personalmente a la Oficina de Formación Docente Continua en el horario de atención.</p>
     <ul>
-      <li>✉️ desarrolloprofesional@iestrada.edu.ar</li>
+      <li><a href="mailto:desarrolloprofesional@iestrada.edu.ar" style="color:var(--dorado-claro);">✉️ desarrolloprofesional@iestrada.edu.ar</a></li>
       <li>🕐 Administración: lunes a viernes de 17:00 a 21:00 hs</li>
       <li>🕐 Coordinación: lunes y miércoles de 09:10 a 13:00 hs</li>
     </ul>
