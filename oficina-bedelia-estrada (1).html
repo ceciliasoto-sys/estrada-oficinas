@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oficina de Bedelía · ISFD José Manuel Estrada</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:#1b2d4f; --azul-medio:#253d6b; --azul-claro:#2e4d87;
+    --dorado:#c9a84c; --dorado-claro:#e8c97d; --dorado-suave:#fef3d0;
+    --blanco:#ffffff; --crema:#f7f4ee; --crema-dark:#edeae1;
+    --texto:#1a1a2e; --gris:#6b7280;
+    --sombra:0 4px 28px rgba(27,45,79,0.13); --radio:14px;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:'DM Sans',sans-serif; background:var(--crema); color:var(--texto); min-height:100vh; padding-bottom:80px; }
+
+  .franja-top { height:5px; background:linear-gradient(90deg,var(--azul),var(--dorado),var(--dorado-claro),var(--dorado),var(--azul)); }
+  header { background:var(--azul); padding:0 0 24px; text-align:center; }
+  .inst-label { display:block; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--dorado); padding:18px 20px 6px; font-weight:500; }
+  header h1 { font-family:'Playfair Display',serif; font-size:clamp(22px,6vw,30px); color:var(--blanco); line-height:1.15; padding:0 20px; }
+  .oficina-sub { font-family:'DM Sans',sans-serif; font-size:clamp(13px,3.5vw,16px); color:var(--dorado-claro); font-weight:400; letter-spacing:0.5px; margin-top:5px; display:block; }
+  .linea-dorada { width:60px; height:2px; background:var(--dorado); margin:10px auto 0; }
+
+  .responsable-wrap { padding:20px 16px 0; display:flex; justify-content:center; }
+  .responsable-card { background:var(--azul-medio); border:1px solid rgba(201,168,76,0.35); border-radius:var(--radio); padding:20px; display:flex; align-items:center; gap:18px; width:100%; max-width:540px; position:relative; overflow:hidden; }
+  .responsable-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .foto-frame { width:80px; height:80px; border-radius:50%; border:2.5px solid var(--dorado); overflow:hidden; flex-shrink:0; }
+  .foto-frame img { width:100%; height:100%; object-fit:cover; object-position:center top; display:block; }
+  .resp-etiqueta { font-size:10px; letter-spacing:1.8px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:4px; }
+  .resp-nombre { font-family:'Playfair Display',serif; font-size:16px; color:var(--blanco); line-height:1.3; margin-bottom:3px; }
+  .resp-cargo { font-size:12px; color:rgba(255,255,255,0.6); font-style:italic; }
+
+  .horario-wrap { padding:12px 16px 20px; display:flex; justify-content:center; }
+  .horario-card { background:rgba(201,168,76,0.12); border:1px solid rgba(201,168,76,0.3); border-radius:10px; padding:10px 20px; display:flex; align-items:center; gap:10px; width:100%; max-width:540px; }
+  .horario-icon { font-size:20px; }
+  .horario-label { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:2px; }
+  .horario-horas { font-size:13px; color:var(--blanco); font-weight:500; }
+
+  main { max-width:640px; margin:0 auto; padding:24px 16px 20px; }
+
+  /* BUSCADOR */
+  .search-wrap { margin-bottom:20px; position:relative; }
+  .search-input { width:100%; padding:12px 16px 12px 44px; border-radius:12px; border:1.5px solid var(--crema-dark); background:var(--blanco); font-family:'DM Sans',sans-serif; font-size:14px; color:var(--texto); box-shadow:var(--sombra); outline:none; transition:border .2s; }
+  .search-input:focus { border-color:var(--dorado); }
+  .search-icon { position:absolute; left:14px; top:50%; transform:translateY(-50%); font-size:18px; pointer-events:none; }
+  .search-results-count { font-size:12px; color:var(--gris); margin-top:6px; padding-left:4px; min-height:16px; }
+  .no-results { text-align:center; padding:24px; color:var(--gris); font-size:14px; display:none; }
+  .no-results.visible { display:block; }
+
+  .seccion-label { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+  .seccion-label::before,.seccion-label::after { content:''; flex:1; height:1px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .seccion-label span { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--dorado); font-weight:600; white-space:nowrap; }
+
+  /* CARDS */
+  .tramite-card { background:var(--blanco); border-radius:var(--radio); box-shadow:var(--sombra); margin-bottom:12px; overflow:hidden; border:1px solid rgba(27,45,79,0.08); transition:box-shadow .2s; }
+  .tramite-card:hover { box-shadow:0 8px 36px rgba(27,45,79,0.16); }
+  .tramite-card.search-hidden { display:none; }
+  .tramite-header { display:flex; align-items:center; gap:14px; padding:16px 16px 14px; cursor:pointer; user-select:none; }
+  .tramite-icon { width:42px; height:42px; border-radius:10px; background:var(--azul); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:19px; }
+  .tramite-titulo { flex:1; font-family:'Playfair Display',serif; font-size:15.5px; color:var(--azul); line-height:1.3; }
+  .tramite-titulo small { font-family:'DM Sans',sans-serif; font-size:11.5px; color:var(--gris); font-weight:400; display:block; margin-top:2px; }
+  .tramite-arrow { color:var(--dorado); font-size:20px; transition:transform .25s; line-height:1; }
+  .tramite-card.open .tramite-arrow { transform:rotate(90deg); }
+  .tramite-body { display:none; padding:0 16px 16px; border-top:1px solid var(--crema-dark); }
+  .tramite-card.open .tramite-body { display:block; padding-top:14px; }
+
+  .nota-box { background:#f0f4fb; border-radius:10px; padding:14px; border-left:3px solid var(--azul-claro); margin-bottom:10px; }
+  .nota-label { font-size:10.5px; text-transform:uppercase; letter-spacing:1px; font-weight:600; color:var(--azul-medio); margin-bottom:8px; }
+  .nota-box p { font-size:13.5px; line-height:1.6; color:#374151; }
+  .nota-box ol { margin-top:7px; padding-left:20px; }
+  .nota-box ol li { font-size:13.5px; line-height:1.85; color:#374151; }
+  .nota-box ul { margin-top:7px; padding-left:18px; }
+  .nota-box ul li { font-size:13.5px; line-height:1.75; color:#374151; }
+
+  .docs-label { font-size:10.5px; text-transform:uppercase; letter-spacing:1px; font-weight:600; color:var(--dorado); margin:14px 0 8px; }
+  .doc-item { display:flex; align-items:flex-start; gap:8px; font-size:13.5px; color:#374151; margin-bottom:7px; line-height:1.5; }
+  .doc-icon { width:24px; height:24px; background:var(--dorado-suave); border:1px solid rgba(201,168,76,0.4); border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; }
+  .alerta { background:#fffbeb; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400e; margin-top:12px; line-height:1.55; }
+  .alerta::before { content:'⚠️ '; }
+  .info-box { background:#f0faf5; border-radius:8px; padding:10px 12px; font-size:12.5px; color:#065f46; margin-top:10px; line-height:1.55; border-left:3px solid #34d399; }
+  .info-box::before { content:'ℹ️ '; }
+  .periodo-box { background:#fffbeb; border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:10px 12px; font-size:12.5px; color:#92400e; margin-top:10px; line-height:1.55; }
+  .periodo-box::before { content:'📅 '; }
+  .sima-btn { display:inline-flex; align-items:center; gap:8px; background:var(--dorado); color:var(--azul); font-size:13px; font-weight:700; padding:9px 18px; border-radius:8px; text-decoration:none; margin:10px 0 4px; transition:background .2s; }
+  .sima-btn:hover { background:var(--dorado-claro); }
+
+  /* highlight buscador */
+  mark { background:rgba(201,168,76,0.3); border-radius:3px; padding:0 2px; font-style:normal; }
+
+  .aviso-general { background:var(--azul); border-radius:var(--radio); padding:20px; margin-top:8px; position:relative; overflow:hidden; }
+  .aviso-general::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,transparent,var(--dorado),transparent); }
+  .aviso-general h3 { font-family:'Playfair Display',serif; font-size:15px; color:var(--dorado-claro); margin-bottom:10px; }
+  .aviso-general p { font-size:13.5px; color:rgba(255,255,255,0.85); line-height:1.6; }
+
+  /* BARRA NAV FIJA */
+  .nav-bar { position:fixed; bottom:0; left:0; right:0; background:var(--azul); border-top:2px solid var(--dorado); display:flex; z-index:100; box-shadow:0 -4px 20px rgba(27,45,79,0.25); overflow-x:auto; }
+  .nav-btn { flex:1; min-width:60px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:9px 4px; cursor:pointer; border:none; background:transparent; gap:2px; transition:background .15s; -webkit-tap-highlight-color:transparent; }
+  .nav-btn:hover, .nav-btn.active { background:rgba(201,168,76,0.15); }
+  .nav-btn .nav-icon { font-size:18px; }
+  .nav-btn .nav-label { font-size:8.5px; letter-spacing:0.3px; text-transform:uppercase; color:var(--dorado); font-weight:600; white-space:nowrap; }
+
+  footer { text-align:center; font-size:12px; color:var(--gris); padding:16px; border-top:1px solid var(--crema-dark); margin-top:8px; }
+  footer span { color:var(--azul-medio); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="franja-top"></div>
+<header>
+  <span class="inst-label">Instituto Superior de Formación Docente</span>
+  <h1>José Manuel Estrada</h1>
+  <span class="oficina-sub">Oficina de Bedelía</span>
+  <div class="linea-dorada"></div>
+  <div class="responsable-wrap">
+    <div class="responsable-card">
+      <div class="foto-frame">
+        <img src="data:image/jpeg;base64,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" alt="Prof. Mariano Rivero">
+      </div>
+      <div>
+        <div class="resp-etiqueta">Responsable del área</div>
+        <div class="resp-nombre">Rivero, Mariano</div>
+        <div class="resp-cargo">Prof. — Bedelía</div>
+      </div>
+    </div>
+  </div>
+  <div class="horario-wrap">
+    <div class="horario-card">
+      <div class="horario-icon">🕐</div>
+      <div>
+        <div class="horario-label">Horario de atención</div>
+        <div class="horario-horas">08:00 – 12:00 hs &nbsp;·&nbsp; 13:30 – 17:30 hs</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" type="text" id="buscador" placeholder="Buscar trámite... ej: libreta, SIMA, equivalencia" autocomplete="off">
+    <div class="search-results-count" id="resultCount"></div>
+  </div>
+
+  <div class="seccion-label"><span>Trámites disponibles</span></div>
+
+  <div class="tramite-card" id="c1" data-keywords="preinscripcion inscripcion ingresante sima legajo dni titulo secundario cooperadora foto carnet psicofisico conducta domicilio partida nacimiento">
+    <div class="tramite-header" onclick="toggleCard('c1')">
+      <div class="tramite-icon">📝</div>
+      <div class="tramite-titulo">Preinscripción<small>nuevos ingresantes</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">💻 Paso 1 — Preinscripción online</div>
+        <a class="sima-btn" href="https://sima.mec.gob.ar/" target="_blank" rel="noopener">🖥️ Ingresar al sistema SIMA</a>
+        <p style="font-size:13px;color:#6b7280;margin-top:6px;">Buscar la carrera en el Catálogo, seleccionarla y completar el registro. El sistema enviará confirmación con fechas y requisitos.</p>
+      </div>
+      <div class="nota-box">
+        <div class="nota-label">🏫 Paso 2 — Confirmación presencial</div>
+        <p>Concurrir a la institución con legajo completo, DNI y aporte voluntario a la <strong>Sociedad Cooperadora</strong>.</p>
+      </div>
+      <div class="docs-label">📎 Documentación para el legajo</div>
+      <div class="doc-item"><div class="doc-icon">🪪</div> Copia del <strong>DNI</strong></div>
+      <div class="doc-item"><div class="doc-icon">🎓</div> Copia del <strong>Título Secundario</strong> con QR, autenticado — o Constancia de adeudar materias (hasta el 31/05) o Constancia de título en trámite</div>
+      <div class="doc-item"><div class="doc-icon">📄</div> <strong>Partida de Nacimiento</strong></div>
+      <div class="doc-item"><div class="doc-icon">🚔</div> <strong>Certificado de Conducta</strong> (Policía de Corrientes)</div>
+      <div class="doc-item"><div class="doc-icon">🏠</div> <strong>Certificado de Domicilio</strong> (Policía de Corrientes)</div>
+      <div class="doc-item"><div class="doc-icon">🏥</div> <strong>Ficha de aptitud psicofísica</strong> (entidad pública o privada)</div>
+      <div class="doc-item"><div class="doc-icon">📷</div> <strong>2 fotos carnet 4×4</strong> y un folio</div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c2" data-keywords="retiro legajo nota mesa entrada rectora carrera contacto">
+    <div class="tramite-header" onclick="toggleCard('c2')">
+      <div class="tramite-icon">📁</div>
+      <div class="tramite-titulo">Retiro de Legajos<small>documentación personal</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📝 Nota por Mesa de Entradas — dirigida a la Rectora</div>
+        <p>Incluir: motivo, Apellido y Nombre, DNI, carrera en la que se inscribió, año de inscripción y número de contacto.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c3" data-keywords="readmision reingreso sima usuario contrasena preceptor matriculacion materias nota rectora">
+    <div class="tramite-header" onclick="toggleCard('c3')">
+      <div class="tramite-icon">🔄</div>
+      <div class="tramite-titulo">Readmisión<small>reingreso al instituto</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📝 Paso 1 — Nota por Mesa de Entradas — dirigida a la Rectora</div>
+        <p>Incluir: motivo, Apellido y Nombre, DNI, carrera y número de contacto.</p>
+      </div>
+      <div class="nota-box">
+        <div class="nota-label">💻 Paso 2 — Gestión en SIMA (personal con usuario y contraseña)</div>
+        <p>Consultar al preceptor del turno.</p>
+        <a class="sima-btn" href="https://sima.mec.gob.ar/" target="_blank" rel="noopener">🖥️ Ingresar al sistema SIMA</a>
+      </div>
+      <div class="nota-box">
+        <div class="nota-label">📋 Paso 3 — Matricularse e inscribirse en materias</div>
+        <p>Realizarlo por SIMA con usuario y contraseña.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c4" data-keywords="libreta examen extravío pérdida solicitar preceptor constancia policial bedelia firmar autoridad">
+    <div class="tramite-header" onclick="toggleCard('c4')">
+      <div class="tramite-icon">📒</div>
+      <div class="tramite-titulo">Libreta de Examen<small>solicitud y extravío</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 Solicitud normal</div>
+        <ol>
+          <li>Solicitar por <strong>Mesa de Entradas</strong></li>
+          <li>Completar datos personales y firma con el <strong>preceptor del turno</strong></li>
+          <li>Retirar por <strong>preceptoría</strong> una vez firmada por la autoridad</li>
+        </ol>
+      </div>
+      <div class="nota-box">
+        <div class="nota-label">🔁 En caso de extravío</div>
+        <p>Presentar por Mesa de Entradas: una <strong>nueva libreta</strong> + nota a la Rectora con motivo, Apellido y Nombre, DNI, carrera, número de contacto y <strong>constancia policial</strong>.</p>
+        <div class="info-box">Retirar la libreta nueva desde Bedelía.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c5" data-keywords="constancia anses alumno regular salario familiar asistencia examenes preceptoria cuaderno practica bedel habilitacion">
+    <div class="tramite-header" onclick="toggleCard('c5')">
+      <div class="tramite-icon">📃</div>
+      <div class="tramite-titulo">Constancias<small>ANSES, alumno regular y otras</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 ANSES · Alumno Regular · Salario Familiar · Asistencia a Exámenes</div>
+        <p>Se solicitan en la <strong>preceptoría del turno</strong> y se retiran por <strong>Mesa de Entradas</strong>.</p>
+      </div>
+      <div class="nota-box">
+        <div class="nota-label">📋 Habilitación del cuaderno de práctica</div>
+        <p>Solicitar al <strong>preceptor del turno</strong> con la firma del Bedel.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c6" data-keywords="sima situacion academica preceptor bedelia nota rectora correccion">
+    <div class="tramite-header" onclick="toggleCard('c6')">
+      <div class="tramite-icon">🖥️</div>
+      <div class="tramite-titulo">Situación Académica en SIMA<small>consultas y correcciones</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 Cómo proceder</div>
+        <p>Dirigirse al <strong>preceptor del turno</strong>. Se resolverá por Bedelía, o presentar nota a la Rectora con motivo, Apellido y Nombre, DNI, carrera y número de contacto.</p>
+      </div>
+      <a class="sima-btn" href="https://sima.mec.gob.ar/" target="_blank" rel="noopener">🖥️ Ingresar al sistema SIMA</a>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c7" data-keywords="equivalencia materia abril programa certificado analitico titulo institucion origen ficha evaluacion sobre notificacion reclamo dias habiles">
+    <div class="tramite-header" onclick="toggleCard('c7')">
+      <div class="tramite-icon">🔀</div>
+      <div class="tramite-titulo">Equivalencias<small>reconocimiento de materias</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📋 Solicitud</div>
+        <p>Presentar por Mesa de Entradas en sobre papel madera con Nombre, Apellido, DNI y Carrera:</p>
+        <ul>
+          <li>Solicitud de Equivalencia (retirar en Mesa de Entradas)</li>
+          <li>1 ficha de evaluación <strong>por cada materia</strong> solicitada</li>
+          <li>Programa del año cursado, <strong>firmado por autoridades</strong> de la institución de origen</li>
+          <li>Certificado analítico o título donde aprobó la materia, <strong>autenticado por la institución de origen</strong></li>
+        </ul>
+      </div>
+      <div class="periodo-box"><strong>Período:</strong> del 1 al 15 de abril de cada año.</div>
+      <div class="nota-box" style="margin-top:12px;">
+        <div class="nota-label">📬 Notificación</div>
+        <p>El preceptor del turno notificará la resolución. Se puede presentar <strong>nota de reclamo dentro de los 10 días hábiles</strong> de notificado, luego de los cuales se puede retirar la documentación.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c8" data-keywords="cambio curso division cuatrimestre nota rectora preceptor notificacion">
+    <div class="tramite-header" onclick="toggleCard('c8')">
+      <div class="tramite-icon">🔁</div>
+      <div class="tramite-titulo">Cambio de Curso o División<small>dentro de la misma carrera</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">📝 Nota por Mesa de Entradas — dirigida a la Rectora</div>
+        <p>Incluir: motivo, Apellido y Nombre, DNI, carrera y número de contacto.</p>
+      </div>
+      <div class="periodo-box"><strong>Plazo:</strong> dentro de los 10 días de iniciado el cursado del 1er cuatrimestre. El preceptor notificará la respuesta.</div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c9" data-keywords="condicion condicional regular sima mayo documentacion secundario terminalidad">
+    <div class="tramite-header" onclick="toggleCard('c9')">
+      <div class="tramite-icon">📋</div>
+      <div class="tramite-titulo">Cambio de Condición del Estudiante<small>de condicional a regular</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">ℹ️ Información</div>
+        <p>Bedelía realizará el cambio de <strong>condicional a regular</strong> en SIMA cuando el estudiante acredite la documentación de inscripción o la terminalidad del Nivel Secundario <strong>al 31 de mayo</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c10" data-keywords="matriculacion inscripcion cursado sima usuario contrasena mesa entrada preceptor confirmar">
+    <div class="tramite-header" onclick="toggleCard('c10')">
+      <div class="tramite-icon">✅</div>
+      <div class="tramite-titulo">Matriculación e Inscripción a Cursado<small>trámite anual obligatorio</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">💻 Matriculación</div>
+        <p>Por SIMA con usuario y contraseña — es personal. Debe confirmarse por <strong>Mesa de Entradas</strong>.</p>
+        <a class="sima-btn" href="https://sima.mec.gob.ar/" target="_blank" rel="noopener">🖥️ Ingresar al sistema SIMA</a>
+      </div>
+      <div class="nota-box">
+        <div class="nota-label">📋 Inscripción a cursado</div>
+        <p>Por SIMA, confirmada con el <strong>preceptor del turno</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c11" data-keywords="inscripcion mesa examen final turno sima usuario contrasena preceptor">
+    <div class="tramite-header" onclick="toggleCard('c11')">
+      <div class="tramite-icon">📆</div>
+      <div class="tramite-titulo">Inscripción a Mesas de Examen<small>turnos de examen final</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="nota-box">
+        <div class="nota-label">💻 Cómo inscribirse</div>
+        <p>Es personal con usuario y contraseña. Consultar al <strong>preceptor del turno</strong>.</p>
+        <a class="sima-btn" href="https://sima.mec.gob.ar/" target="_blank" rel="noopener">🖥️ Ingresar al sistema SIMA</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tramite-card" id="c12" data-keywords="examen final rendir libreta programa materia minutos preceptor dos materias mismo dia turno">
+    <div class="tramite-header" onclick="toggleCard('c12')">
+      <div class="tramite-icon">🎯</div>
+      <div class="tramite-titulo">Requisitos para Rendir Examen Final<small>presentación en mesa</small></div>
+      <div class="tramite-arrow">›</div>
+    </div>
+    <div class="tramite-body">
+      <div class="docs-label">📎 Llevar el día del examen</div>
+      <div class="doc-item"><div class="doc-icon">📒</div> <strong>Libreta de Examen</strong></div>
+      <div class="doc-item"><div class="doc-icon">📄</div> <strong>Programa de la materia</strong></div>
+      <div class="doc-item"><div class="doc-icon">⏰</div> Presentarse <strong>10 minutos antes</strong> de la mesa</div>
+      <div class="alerta">Si rendís dos materias el mismo día en el mismo turno, avisá al preceptor <strong>20 minutos antes</strong> de iniciar.</div>
+    </div>
+  </div>
+
+  <div class="no-results" id="noResults">No se encontraron resultados para tu búsqueda.</div>
+
+  <div class="aviso-general">
+    <h3>📌 Recordá</h3>
+    <p>La mayoría de los trámites se inician con una <strong>nota por Mesa de Entradas</strong> dirigida a la Rectora. Los trámites de SIMA son personales con usuario y contraseña — consultá siempre al <strong>preceptor de tu turno</strong>.</p>
+  </div>
+</main>
+
+<footer>
+  <span>ISFD "José Manuel Estrada"</span> · Corrientes · Oficina de Bedelía
+</footer>
+
+<!-- BARRA NAV FIJA -->
+<nav class="nav-bar">
+  <button class="nav-btn" onclick="navTo('c1',this)"><span class="nav-icon">📝</span><span class="nav-label">Inscripción</span></button>
+  <button class="nav-btn" onclick="navTo('c4',this)"><span class="nav-icon">📒</span><span class="nav-label">Libreta</span></button>
+  <button class="nav-btn" onclick="navTo('c7',this)"><span class="nav-icon">🔀</span><span class="nav-label">Equiv.</span></button>
+  <button class="nav-btn" onclick="navTo('c10',this)"><span class="nav-icon">✅</span><span class="nav-label">Matrícula</span></button>
+  <button class="nav-btn" onclick="navTo('c12',this)"><span class="nav-icon">🎯</span><span class="nav-label">Rendir</span></button>
+</nav>
+
+<script>
+  function toggleCard(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+
+  function navTo(id, btn) {
+    const card = document.getElementById(id);
+    if (!card.classList.contains('open')) card.classList.add('open');
+    setTimeout(() => card.scrollIntoView({ behavior:'smooth', block:'start' }), 50);
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  const buscador = document.getElementById('buscador');
+  const resultCount = document.getElementById('resultCount');
+  const noResults = document.getElementById('noResults');
+  const cards = document.querySelectorAll('.tramite-card');
+
+  buscador.addEventListener('input', function() {
+    const query = this.value.trim().toLowerCase();
+
+    if (!query) {
+      cards.forEach(card => {
+        card.classList.remove('search-hidden', 'open');
+      });
+      resultCount.textContent = '';
+      noResults.classList.remove('visible');
+      return;
+    }
+
+    let found = 0;
+    cards.forEach(card => {
+      const keywords = (card.dataset.keywords || '').toLowerCase();
+      const titulo = card.querySelector('.tramite-titulo').textContent.toLowerCase();
+      const body = card.querySelector('.tramite-body').textContent.toLowerCase();
+      const match = keywords.includes(query) || titulo.includes(query) || body.includes(query);
+
+      if (match) {
+        card.classList.remove('search-hidden');
+        card.classList.add('open');
+        found++;
+      } else {
+        card.classList.add('search-hidden');
+        card.classList.remove('open');
+      }
+    });
+
+    resultCount.textContent = found > 0
+      ? found + ' trámite' + (found !== 1 ? 's' : '') + ' encontrado' + (found !== 1 ? 's' : '')
+      : '';
+    noResults.classList.toggle('visible', found === 0);
+  });
+</script>
+</body>
+</html>
